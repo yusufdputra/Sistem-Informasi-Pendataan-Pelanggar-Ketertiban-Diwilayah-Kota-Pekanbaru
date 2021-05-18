@@ -19,10 +19,10 @@ class CreateUsersTable extends Migration
             $table->string('nama');
             $table->string('password');
             $table->string('nomor_hp');
-            $table->enum('tipe_user', ['admin', 'pimpinan', 'pegawai']);
+            $table->enum('tipe_user', ['admin', 'pimpinan', 'petugas']);
+            
             $table->rememberToken();
             $table->timestamps();
-            
             $table->timestamp('deleted_at')->nullable();
         });
     }

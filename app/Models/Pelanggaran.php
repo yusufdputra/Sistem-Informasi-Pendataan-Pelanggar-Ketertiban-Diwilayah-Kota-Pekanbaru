@@ -6,14 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Restok extends Model
+class Pelanggaran extends Model
 {
     use HasFactory, SoftDeletes;
-    
     protected $dates = ['deleted_at'];
-    
-    public function barang()
+
+    public function user()
     {
-        return $this->hasMany(Barang::class, 'id', 'id_barang')->withTrashed();
+        return $this->hasMany(User::class, 'id', 'id_petugas')->withTrashed();
     }
 }
