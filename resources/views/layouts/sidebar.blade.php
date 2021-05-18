@@ -4,7 +4,7 @@
     <!-- User -->
     <div class="user-box">
       <div class="user-img">
-        <img src="{{asset('adminto/images/users/avatar-1.jpg')}}" alt="user-img" title="Mat Helme" class="rounded-circle img-thumbnail img-responsive">
+        <img src="{{asset('adminto/images/users/profile.png')}}" alt="user-img" title="Mat Helme" class="rounded-circle img-thumbnail img-responsive">
         <div class="user-status online"><i class="mdi mdi-adjust"></i></div>
       </div>
       <h5><a href="#"> {{ Auth::user()->nama }}</a> </h5>
@@ -38,28 +38,16 @@
           <a href="javascript:void(0);" class="waves-effect"><i class=" mdi mdi-account-multiple"></i> <span> Data User </span> <span class="fa menu-arrow"></span></a>
           <ul class=" list-unstyled">
             <li><a href="{{route ('user.index', 'pimpinan')}}">Pimpinan</a></li>
-            <li><a href="{{route ('user.index', 'pegawai')}}">Pegawai</a></li>
+            <li><a href="{{route ('user.index', 'petugas')}}">Petugas</a></li>
           </ul>
         </li>
 
         @endrole
 
 
-        @role('admin|pegawai|pimpinan')
+        @role('admin|petugas|pimpinan')
         <li>
-          <a href="{{route ('barang.index')}}" class="waves-effect"><i class="mdi mdi-package-variant-closed"></i> <span> Barang </span> </a>
-        </li>
-
-        <li class="has_sub">
-          <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-cube-send"></i> <span> Transaksi </span> <span class="fa menu-arrow"></span></a>
-          <ul class=" list-unstyled">
-            <li><a href="{{route ('masuk.index')}}">Masuk</a></li>
-            <li><a href="{{route ('keluar.index')}}">Keluar</a></li>
-          </ul>
-        </li>
-
-        <li>
-          <a href="{{route ('restok.index')}}" class="waves-effect"><i class="mdi mdi-basket-fill"></i> <span> Restok </span> </a>
+          <a href="{{route ('pelanggaran.index')}}" class="waves-effect"><i class="mdi mdi-radioactive"></i> <span> Pelanggaran </span> </a>
         </li>
 
         @endrole
@@ -96,7 +84,7 @@
   </div> <!-- content -->
 
   <footer class="footer text-right">
-    2021 - PT. Sejahtera Mandiri Pekanbaru
+    2021 - Satpol PP Kota Pekanbaru
   </footer>
 
 </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\CetakController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\RabController;
 use App\Http\Controllers\RabTempController;
 use App\Http\Controllers\RestokController;
@@ -103,17 +104,21 @@ Route::group(['middleware' => ['role:admin|pegawai']], function () {
     Route::POST('/restok/hapus/', [RestokController::class, 'hapus'])->name('restok.hapus');
 });
 
-Route::group(['middleware' => ['role:pegawai|admin|pimpinan']], function () {  
-    // barang masuk
-    Route::get('/masuk', [BarangMasukController::class, 'index'])->name('masuk.index');
-    // barang keluar
-    Route::get('/keluar', [BarangKeluarController::class, 'index'])->name('keluar.index');
-    // kelola barang index
-    Route::get('/barang', [BarangController::class, 'index'])->name('barang.index');
-    // kelola restok barang 
-    Route::get('/restok', [RestokController::class, 'index'])->name('restok.index');
+Route::group(['middleware' => ['role:petugas|admin|pimpinan']], function () {  
+    // barang pelanggaran
+    Route::get('/pelanggaran', [PelanggaranController::class, 'index'])->name('pelanggaran.index');
+  
     // kelola cetak
     Route::post('/cetak/cetak', [CetakController::class, 'cetak'])->name('cetak.cetak');
 });
+
+Route::group(['middleware' => ['role:petugas']], function () {  
+    // barang pelanggaran
+    Route::get('/pelanggaran/baru', [PelanggaranController::class, 'baru'])->name('pelanggaran.baru');
+  
+    // kelola cetak
+    Route::post('/cetak/cetak', [CetakController::class, 'cetak'])->name('cetak.cetak');
+});
+
 
 Route::get('/getBarangById/{id}', [BarangController::class, 'getBarangById'])->name('getBarangById');

@@ -36,10 +36,8 @@ class HomeController extends Controller
         $title = "Dashboard";
 
         if (Auth::check()) {
-            $barangs = Barang::orderBy('stok', 'ASC')->where('stok', '<', 100)->limit(5)->get();
-            $masuks = BarangMasuk::orderBy('created_at', 'DESC')->limit(5)->get();
-            $keluars = BarangKeluar::orderBy('created_at', 'DESC')->limit(5)->get();
-            return view('home', compact('title', 'barangs', 'masuks', 'keluars'));
+          
+            return view('home', compact('title'));
         }
         return view('auth.login', compact('title'));
     }
