@@ -42,6 +42,10 @@
           </ul>
         </li>
 
+        <li>
+          <a href="{{route ('perda.index')}}" class="waves-effect"><i class="fa fa-balance-scale"></i> <span> PerDa </span> </a>
+        </li>
+
         @endrole
 
 

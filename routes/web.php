@@ -7,11 +7,15 @@ use App\Http\Controllers\CetakController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PelanggaranController;
+use App\Http\Controllers\PerdaController;
+use App\Http\Controllers\PerdaPelanggaranController;
+use App\Http\Controllers\PerdaSangsiController;
 use App\Http\Controllers\RabController;
 use App\Http\Controllers\RabTempController;
 use App\Http\Controllers\RestokController;
 use App\Http\Controllers\UserManagementController;
 use App\Models\Barang;
+use App\Models\PerdaPelanggaran;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +46,25 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::post('/user/update', [UserManagementController::class, 'update'])->name('user.update');
     Route::post('/user/hapus', [UserManagementController::class, 'hapus'])->name('user.hapus');
     Route::post('/user/resetpw', [UserManagementController::class, 'resetpw'])->name('user.resetpw');
+    
+    // kelola peraturan daerah
+    Route::get('/perda', [PerdaController::class, 'index'])->name('perda.index');
+    Route::post('/perda/store', [PerdaController::class, 'store'])->name('perda.store');
+    Route::post('/perda/update', [PerdaController::class, 'update'])->name('perda.update');
+    Route::get('/perda/edit/{id}', [PerdaController::class, 'edit'])->name('perda.edit');
+    Route::post('/perda/hapus', [PerdaController::class, 'hapus'])->name('perda.hapus');
+    
+    // kelola detail pelanggaran perda
+    Route::post('/PerdaPelanggaran/store', [PerdaPelanggaranController::class, 'store'])->name('PerdaPelanggaran.store');
+    Route::post('/PerdaPelanggaran/hapus', [PerdaPelanggaranController::class, 'hapus'])->name('PerdaPelanggaran.hapus');
+    Route::post('/PerdaPelanggaran/edit', [PerdaPelanggaranController::class, 'edit'])->name('PerdaPelanggaran.edit');
+
+    // kelola detail sangsi perda
+    Route::post('/sangsi/store', [PerdaSangsiController::class, 'store'])->name('sangsi.store');
+    Route::post('/sangsi/hapus', [PerdaSangsiController::class, 'hapus'])->name('sangsi.hapus');
+    Route::post('/sangsi/edit', [PerdaSangsiController::class, 'edit'])->name('sangsi.edit');
+
+
 
      // kelola barang
      Route::post('/barang/store', [BarangController::class, 'store'])->name('barang.store');
