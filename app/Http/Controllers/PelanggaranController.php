@@ -7,6 +7,7 @@ use App\Models\Perda;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PelanggaranController extends Controller
 {
@@ -87,7 +88,13 @@ class PelanggaranController extends Controller
 
     public function hapus(Request $request)
     {
-        $query = Pelanggaran::where('id', $request->id)->delete();
+        $pelanggaran = Pelanggaran::find($request->id);
+        // dd($pelanggaran['ktp_path']);
+        $image_path = public_path('\storage/' . $pelanggaran['ktp_path']);
+        // Storage::disk('public')->delete('/storage/uploads/'.$pelanggaran['ktp_path']);
+        unlink($image_path);
+
+        $query = $pelanggaran->delete();
 
         if ($query) {
             return redirect()->back()->with('success', 'Berhasil menghapus Pelanggaran');
@@ -101,21 +108,21 @@ class PelanggaranController extends Controller
         try {
 
             $query = Pelanggaran::where('id', $request->id)
-            ->update([
-                'no_ktp' => $request->no_ktp,
-                'nama' => $request->nama,
-                'ttl' => $request->tempat_lahir . '-' . $request->tgl_lahir,
-                'jns_kelamin' => $request->jns_kelamin,
-                'agama' => $request->agama,
-                'pekerjaan' => $request->pekerjaan,
-                'alamat' => $request->alamat,
-                'nomor_hp' => $request->no_hp,
-                'nama_perda' => $request->nama_perda,
-                'pelanggaran' => $request->perdaPelanggaran,
-                'sangsi' => $request->jenisSangsi,
-                'keterangan' => $request->keterangan,
-                'lokasi' => $request->lokasi,
-            ]);
+                ->update([
+                    'no_ktp' => $request->no_ktp,
+                    'nama' => $request->nama,
+                    'ttl' => $request->tempat_lahir . '-' . $request->tgl_lahir,
+                    'jns_kelamin' => $request->jns_kelamin,
+                    'agama' => $request->agama,
+                    'pekerjaan' => $request->pekerjaan,
+                    'alamat' => $request->alamat,
+                    'nomor_hp' => $request->no_hp,
+                    'nama_perda' => $request->nama_perda,
+                    'pelanggaran' => $request->perdaPelanggaran,
+                    'sangsi' => $request->jenisSangsi,
+                    'keterangan' => $request->keterangan,
+                    'lokasi' => $request->lokasi,
+                ]);
 
             if ($query) {
                 return redirect()->back()->with('success', 'Pelanggaran Baru Berhasil di ubah');
@@ -124,6 +131,20 @@ class PelanggaranController extends Controller
             }
         } catch (\Throwable $th) {
             return redirect()->back()->with('alert', 'Terjadi Kesalahan. Coba lagi.' . $th);
+        }
+    }
+
+    public function terima($id)
+    {
+        try {
+            Pelanggaran::where('id', $id)
+                ->update([
+                    'status' => 1
+                ]);
+
+            return redirect()->back()->with('success', 'Pelanggaran Berhasil Di Approve');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('alert', 'Pelanggaran Gagal Di Approve');
         }
     }
 }

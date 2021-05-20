@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pelanggaran extends Model
 {
-    use HasFactory, SoftDeletes;
-    protected $dates = ['deleted_at'];
+    use HasFactory;
 
     public function user()
     {

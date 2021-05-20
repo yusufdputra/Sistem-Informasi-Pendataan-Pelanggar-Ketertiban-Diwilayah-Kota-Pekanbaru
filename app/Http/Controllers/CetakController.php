@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BarangKeluar;
 use App\Models\BarangMasuk;
+use App\Models\Pelanggaran;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PDF;
@@ -21,16 +22,14 @@ class CetakController extends Controller
         $date2 = str_replace('/', '-', $request->end_date);
         $end = date('Y-m-d h:m:s', strtotime($date2));
 
+        $laporan = Pelanggaran::with('user', 'perda')
+        ->whereBetween('created_at', [$start, $end])
+        ->where('status', 1)
+        ->orderBy('created_at', 'DESC')
+        ->get();
+        $pdf = PDF::loadview('cetak.laporan', compact('laporan', 'start', 'end'))->setPaper('a4', 'landscape');
 
-        if ($request->jenis == 'keluar') {
-            $barang = BarangKeluar::with('barang')->whereBetween('created_at',[$start, $end])->orderBy('created_at', 'DESC')->get();
-            $pdf = PDF::loadview('cetak.keluar', compact('barang', 'start', 'end'));
-        }else{
-            $barang = BarangMasuk::with('barang')->whereBetween('created_at',[$start, $end])->orderBy('created_at', 'DESC')->get();
-            $pdf = PDF::loadview('cetak.masuk', compact('barang', 'start', 'end'));
 
-        }
-        
 
         return $pdf->stream();
     }

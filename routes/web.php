@@ -65,74 +65,21 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::post('/sangsi/edit', [PerdaSangsiController::class, 'edit'])->name('sangsi.edit');
 
 
+    // approve pelanggaran
+    Route::get('/pelanggaran/terima/{id}', [PelanggaranController::class, 'terima'])->name('pelanggaran.terima');
 
-     // kelola barang
-     Route::post('/barang/store', [BarangController::class, 'store'])->name('barang.store');
-     Route::get('/barang/edit/{id}', [BarangController::class, 'edit'])->name('barang/edit');
-     Route::POST('/barang/update/', [BarangController::class, 'update'])->name('barang.update');
-     Route::POST('/barang/hapus/', [BarangController::class, 'hapus'])->name('barang.hapus');
-
-   
-    // kelola kategori
-    Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
-    Route::post('/kategori/store', [KategoriController::class, 'store'])->name('kategori.store');
-    Route::POST('/kategori/edit', [KategoriController::class, 'update'])->name('kategori.update');
-    Route::POST('/kategori/hapus/', [KategoriController::class, 'hapus'])->name('kategori.hapus');
-
-    // kelola rab
-    Route::get('/rab', [RabController::class, 'index'])->name('rab.index');
-    Route::get('/rab/edit/{id}', [RabController::class, 'edit'])->name('rab.edit');
-    Route::get('/rab/cetak/{id}', [RabController::class, 'cetak'])->name('rab.cetak');
-    Route::POST('/rab/delete/', [RabController::class, 'hapus'])->name('rab.delete');
-
-    // kelola edit rab
-    Route::POST('/rab/edit/selesai/', [RabController::class, 'editSelesai'])->name('rab.edit.selesai');
-    Route::POST('/rab/edit/update/', [RabController::class, 'editUpdate'])->name('rab.edit.update');
-    Route::post('/rab/edit/store', [RabController::class, 'editStore'])->name('rab.edit.store');
-    Route::POST('/rab/hapus/', [RabController::class, 'editHapus'])->name('rab.edit.hapus');
-
-    // kelola rab temp
-    Route::get('/rabtemp', [RabTempController::class, 'index'])->name('rabtemp.index');
-    Route::post('/rabtemp/store', [RabTempController::class, 'store'])->name('rabtemp.store');
-    Route::get('/rabtemp/edit/{id}', [RabTempController::class, 'edit'])->name('rabtemp/edit');
-    Route::POST('/rabtemp/update/', [RabTempController::class, 'update'])->name('rabtemp.update');
-    Route::POST('/rabtemp/hapus/', [RabTempController::class, 'hapus'])->name('rabtemp.hapus');
-    Route::POST('/rabtemp/selesai/', [RabTempController::class, 'selesai'])->name('rabtemp.selesai');
-
-    // kelola ajax
-    Route::get('/GetBarangByKategori/{id}', [AjaxController::class, 'GetBarangByKategori'])->name('GetBarangByKategori');
-
+    
 
 });
 
-Route::group(['middleware' => ['role:admin|pegawai']], function () {
 
-    // barang masuk
-    Route::post('masuk/store', [BarangMasukController::class, 'store'])->name('masuk.store');
-    Route::get('/masuk/edit/{id}', [BarangMasukController::class, 'edit'])->name('masuk/edit');
-    Route::POST('/masuk/update/', [BarangMasukController::class, 'update'])->name('masuk.update');
-    Route::POST('/masuk/hapus/', [BarangMasukController::class, 'hapus'])->name('masuk.hapus');
-
-    // barang keluar
-    Route::post('keluar/store', [BarangKeluarController::class, 'store'])->name('keluar.store');
-    Route::get('/keluar/edit/{id}', [BarangKeluarController::class, 'edit'])->name('keluar/edit');
-    Route::POST('/keluar/update/', [BarangKeluarController::class, 'update'])->name('keluar.update');
-    Route::POST('/keluar/hapus/', [BarangKeluarController::class, 'hapus'])->name('keluar.hapus');
-  
-    // kelola restok barang 
-    Route::post('restok/store', [RestokController::class, 'store'])->name('restok.store');
-    Route::get('/restok/edit/{id}', [RestokController::class, 'edit'])->name('restok/edit');
-    Route::POST('/restok/update/', [RestokController::class, 'update'])->name('restok.update');
-    Route::POST('/restok/terima/', [RestokController::class, 'terima'])->name('restok.terima');
-    Route::POST('/restok/hapus/', [RestokController::class, 'hapus'])->name('restok.hapus');
-});
 
 Route::group(['middleware' => ['role:petugas|admin|pimpinan']], function () {  
     // barang pelanggaran
     Route::get('/pelanggaran', [PelanggaranController::class, 'index'])->name('pelanggaran.index');
     
     // kelola cetak
-    Route::post('/cetak/cetak', [CetakController::class, 'cetak'])->name('cetak.cetak');
+    Route::post('/cetak', [CetakController::class, 'cetak'])->name('cetak');
 });
 
 Route::group(['middleware' => ['role:petugas']], function () {  
@@ -142,14 +89,8 @@ Route::group(['middleware' => ['role:petugas']], function () {
     Route::get('/pelanggaran/edit/{id}', [PelanggaranController::class, 'edit'])->name('pelanggaran.edit');
     Route::post('/pelanggaran/update', [PelanggaranController::class, 'update'])->name('pelanggaran.update');
     Route::POST('/pelanggaran/hapus/', [PelanggaranController::class, 'hapus'])->name('pelanggaran.hapus');
-  
-    // kelola cetak
-    Route::post('/cetak/cetak', [CetakController::class, 'cetak'])->name('cetak.cetak');
 
     // ajax 
     Route::get('/getPerda/{id}', [PerdaController::class, 'getPerdaById'])->name('getPerda');
     Route::get('/getPelanggaran/{no_ktp}', [PelanggaranController::class, 'getPelanggaran'])->name('getPelanggaran');
 });
-
-
-Route::get('/getBarangById/{id}', [BarangController::class, 'getBarangById'])->name('getBarangById');

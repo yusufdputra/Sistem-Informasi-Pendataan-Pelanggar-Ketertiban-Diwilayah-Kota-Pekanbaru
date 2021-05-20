@@ -4,7 +4,7 @@
 <div class="row">
   <div class="col-12">
     <div class="card-box">
-
+    <a href="{{route('pelanggaran.index')}}" class="btn btn-danger m-l-10 waves-light mb-3">Kembali</a>
 
       @if(\Session::has('alert'))
       <div class="alert alert-danger">

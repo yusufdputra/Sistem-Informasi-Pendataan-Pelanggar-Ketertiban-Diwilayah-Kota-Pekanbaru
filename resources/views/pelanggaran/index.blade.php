@@ -4,15 +4,18 @@
 <div class="row">
   <div class="col-12">
     <div class="card-box table-responsive">
-      @role('petugas')
       <div class="form-row">
+        @role('petugas')
         <div class="form-group ">
           <a href="{{route('pelanggaran.baru')}}" class="btn btn-primary m-l-10 waves-light  ">Tambah</a>
         </div>
 
-      </div>
-      @endrole
+        @endrole
 
+        <div class="form-group ">
+          <a href="#cetak-modal" data-animation="sign" data-plugin="custommodal" data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-secondary m-l-10 waves-light  ">Cetak</a>
+        </div>
+      </div>
       @if(\Session::has('alert'))
       <div class="alert alert-danger">
         <div>{{Session::get('alert')}}</div>
@@ -79,12 +82,12 @@
             @if (($value->status) == 0)
             <td>
               @role('admin')
-              <a href="#terima-modal" data-animation="sign" data-plugin="custommodal" data-id='{{$value->id}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn  btn-success btn-sm modal_terima"><i class="mdi mdi-check"></i></a>
+              <a href="{{route('pelanggaran.terima', $value->id)}}" class="btn  btn-success btn-sm"><i class="mdi mdi-check"></i></a>
               @else
               <div class="row">
-              <a href="{{route('pelanggaran.edit', $value->id)}}"  class="btn  btn-success btn-sm modal_edit"><i class="fa fa-edit"></i></a>
+                <a href="{{route('pelanggaran.edit', $value->id)}}" class="btn  btn-success btn-sm"><i class="fa fa-edit"></i></a>
 
-              <a href="#hapus-modal" data-animation="sign" data-plugin="custommodal" data-id='{{$value->id}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn  btn-danger btn-sm hapus"><i class="fa fa-trash"></i></a>
+                <a href="#hapus-modal" data-animation="sign" data-plugin="custommodal" data-id='{{$value->id}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn  btn-danger btn-sm hapus"><i class="fa fa-trash"></i></a>
               </div>
               @endrole
             </td>
@@ -161,7 +164,7 @@
 
 </div>
 
-<div id="terima-modal" class="modal-demo">
+<div id="cetak-modal" class="modal-demo">
   <button type="button" class="close" onclick="Custombox.close();">
     <span>&times;</span><span class="sr-only">Close</span>
   </button>
@@ -169,47 +172,38 @@
   <div class="custom-modal-text">
 
     <div class="text-center">
-      <h4 class="text-uppercase font-bold mb-0">Terima Pengajuan</h4>
+      <h4 class="text-uppercase font-bold mb-0">Cetak Laporan</h4>
     </div>
     <div class="p-20 text-left">
-      <form class="form-horizontal m-t-20" enctype="multipart/form-data" action="{{route('restok.terima')}}" method="POST">
+      <form class="form-horizontal m-t-20" target="_BLANK" enctype="multipart/form-data" action="{{route('cetak')}}" method="POST">
         {{csrf_field()}}
 
-        <input type="hidden" name="id" id="terima_id">
-        <input type="hidden" name="id_barang" id="terima_id_barang">
+        <input type="hidden" value="keluar" name="jenis">
 
         <div class="form-group">
-          <label for="">Nama Barang</label>
+          <label for="">Dari Tanggal</label>
           <div class="col-xs-12">
-            <input class="form-control" required readonly id="terima_nama_barang" type="text" autocomplete="off" required="" placeholder="Nama Barang">
+            <div class="input-group-append">
+              <input type="text" class="form-control datepicker-autoclose" placeholder="dd/mm/yyyy"  autocomplete="off"  name="start_date" id="">
+              <span class="input-group-text"><i class="ti-calendar"></i></span>
+            </div>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="">Stok Saat Ini</label>
+          <label for="">Sampai Tanggal</label>
           <div class="col-xs-12">
-            <input class="form-control" required readonly id="terima_stok_sekarang" type="number" min="0" autocomplete="off" required="" placeholder="Stok Barang">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="">Stok Permintaan</label>
-          <div class="col-xs-12">
-            <input class="form-control" readonly type="number" min="0" autocomplete="off" id="terima_permintaan_stok" required="" placeholder="Stok Barang">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="">Stok Terpenuhi</label>
-          <div class="col-xs-12">
-            <input class="form-control" type="number" min="0" autocomplete="off" name="terpenuhi_stok" id="terima_terpenuhi_stok" required="" placeholder="Stok Barang">
+            <div class="input-group-append">
+              <input type="text" class="form-control datepicker-autoclose" placeholder="dd/mm/yyyy"  autocomplete="off" name="end_date"  id="">
+              <span class="input-group-text"><i class="ti-calendar"></i></span>
+            </div>
           </div>
         </div>
 
 
         <div class="form-group text-center m-t-30">
           <div class="col-xs-12">
-            <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit">Ubah</button>
+            <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit">Cetak</button>
           </div>
         </div>
 
@@ -231,71 +225,10 @@
     $('#load').html('')
   });
 
-  $('.modal_terima').click(function() {
-    var id = $(this).data('id');
-    $('#terima_id').val(id)
-    $.ajax({
-      url: '{{url("restok/edit")}}/' + id,
-      type: 'GET',
-      dataType: 'json',
-      success: 'success',
-      success: function(data) {
-
-        $('#terima_id').val(id)
-        $('#terima_id_barang').val(data['barang'][0]['id'])
-        $('#terima_nama_barang').val(data['barang'][0]['nama'])
-        $('#terima_stok_sekarang').val(data['barang'][0]['stok'])
-        $('#terima_permintaan_stok').val(data['permintaan_stok'])
-        $('#terima_terpenuhi_stok').attr({
-          "max": data['permintaan_stok']
-        });
-      },
-      error: function(data) {
-        toastr.error('Gagal memanggil data! ')
-      }
-    })
-  });
-
   $('.hapus').click(function() {
     var id = $(this).data('id');
     $('#id_hapus').val(id);
   });
-
-  // untuk tambah
-  document.getElementById('id_barang').addEventListener("change", function() {
-    $('#stok_tersedia').html('')
-    $.ajax({
-      url: '{{url("getBarangById")}}/' + this.value,
-      type: 'GET',
-      dataType: 'json',
-      success: 'success',
-      success: function(data) {
-        $('#stok_tersedia').val(data['stok'])
-
-      },
-      error: function(data) {
-        toastr.error('Gagal memanggil data! ')
-      }
-    })
-  })
-
-  // untuk edit
-  document.getElementById('edit_id_barang').addEventListener("change", function() {
-    $('#edit_stok_tersedia').html('')
-    $.ajax({
-      url: '{{url("getBarangById")}}/' + this.value,
-      type: 'GET',
-      dataType: 'json',
-      success: 'success',
-      success: function(data) {
-        $('#edit_stok_tersedia').val(data['stok'])
-
-      },
-      error: function(data) {
-        toastr.error('Gagal memanggil data! ')
-      }
-    })
-  })
 </script>
 
 
