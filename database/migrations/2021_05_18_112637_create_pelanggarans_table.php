@@ -23,7 +23,10 @@ class CreatePelanggaransTable extends Migration
             $table->string('pekerjaan');
             $table->string('alamat');
             $table->string('nomor_hp');
-            $table->string('jns_pelanggaran');
+            $table->bigInteger('nama_perda');
+            $table->string('pelanggaran');
+            $table->string('sangsi');
+            $table->string('lokasi');
             $table->text('keterangan');
             $table->string('ktp_path');
             $table->boolean('status');

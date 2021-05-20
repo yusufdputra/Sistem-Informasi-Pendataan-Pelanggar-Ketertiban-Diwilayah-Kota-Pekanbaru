@@ -15,4 +15,9 @@ class Pelanggaran extends Model
     {
         return $this->hasMany(User::class, 'id', 'id_petugas')->withTrashed();
     }
+
+    public function perda()
+    {
+        return $this->hasMany(Perda::class, 'id', 'nama_perda')->withTrashed();
+    }
 }

@@ -43,7 +43,7 @@ class PerdaController extends Controller
                     $sangsis[$key][$k] = $nama;
                 }
             }
-        }   
+        }
         return view('admin.perda.index', compact('perda', 'title', 'pelanggarans', 'sangsis'));
     }
 
@@ -109,4 +109,36 @@ class PerdaController extends Controller
 
         return redirect()->back()->with('success', 'Perda Berhasil diubah');
     }
+
+    public static function getPerdaById($id)
+    {
+        $perda = Perda::find($id);
+        $pelanggarans = array();
+        $sangsis = array();
+        // pelanggaran
+        $pelanggaran = unserialize($perda['pelanggaran']);
+
+        if (count($pelanggaran)  == 0) {
+            $pelanggarans = null;
+        } else {
+            foreach ($pelanggaran as $k => $pel) {
+                $nama = PerdaPelanggaran::find($pel);
+                $pelanggarans[$k] = $nama;
+            }
+        }
+        // sangsi
+        $sangsi = unserialize($perda['jenis_sangsi']);
+        if (count($sangsi)  == 0) {
+            $sangsis = null;
+        } else {
+            foreach ($sangsi as $k => $sang) {
+                $nama = PerdaSangsi::find($sang);
+                $sangsis[$k] = $nama;
+            }
+        }
+
+        return compact('pelanggarans', 'sangsis');
+    }
+
+    
 }

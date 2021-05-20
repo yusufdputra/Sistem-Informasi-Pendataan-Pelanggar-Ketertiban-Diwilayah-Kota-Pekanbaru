@@ -7,7 +7,7 @@
       @role('petugas')
       <div class="form-row">
         <div class="form-group ">
-          <a href="{{route('pelanggaran.baru')}}"  class="btn btn-primary m-l-10 waves-light  ">Tambah</a>
+          <a href="{{route('pelanggaran.baru')}}" class="btn btn-primary m-l-10 waves-light  ">Tambah</a>
         </div>
 
       </div>
@@ -37,12 +37,12 @@
             <th>Pekerjaan</th>
             <th>Alamat</th>
             <th>Nomor Hp</th>
-            <th>Jenis Pelanggaran</th>
+            <th>Pelanggaran</th>
             <th>Waktu</th>
             <th>Lokasi</th>
             <th>Keterangan</th>
             <th>Foto KTP</th>
-            @role('admin|pegawai')
+            @role('admin|petugas')
             <th>Action</th>
             @endrole
           </tr>
@@ -51,8 +51,49 @@
         <tbody>
 
           @foreach ($pelanggaran as $key=>$value)
-        
+          <tr>
+            <td>{{$key+1}}</td>
+            <td>{{$value->no_ktp}}</td>
+            <td>{{$value->nama}}</td>
+            <td>{{$value->ttl}}</td>
+            <td>
+              @if($value->jns_kelamin == 'lk')
+              Laki-Laki
+              @else
+              Perempuan
+              @endif
+            </td>
+            <td>{{$value->agama}}</td>
+            <td>{{$value->pekerjaan}}</td>
+            <td>{{$value->alamat}}</td>
+            <td>{{$value->nomor_hp}}</td>
+            <td>{{$value->perda[0]['nama_perda']}} - {{$value->pelanggaran}}</td>
+            <td>{{date("d-M-Y H:m ", strtotime(($value->created_at)))}} WIB</td>
+            <td>{{$value->lokasi}}</td>
+            <td>{{$value->keterangan}}</td>
+            <td>
+              <a href="#view-image-modal" data-animation="sign" data-plugin="custommodal" data-path='{{$value->ktp_path}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-primary btn-sm view_image"><i class=" mdi mdi-eye"></i></a>
+            </td>
 
+            @role('admin|petugas')
+            @if (($value->status) == 0)
+            <td>
+              @role('admin')
+              <a href="#terima-modal" data-animation="sign" data-plugin="custommodal" data-id='{{$value->id}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn  btn-success btn-sm modal_terima"><i class="mdi mdi-check"></i></a>
+              @else
+              <div class="row">
+              <a href="{{route('pelanggaran.edit', $value->id)}}"  class="btn  btn-success btn-sm modal_edit"><i class="fa fa-edit"></i></a>
+
+              <a href="#hapus-modal" data-animation="sign" data-plugin="custommodal" data-id='{{$value->id}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn  btn-danger btn-sm hapus"><i class="fa fa-trash"></i></a>
+              </div>
+              @endrole
+            </td>
+            @else
+            <td>Sudah Diterima</td>
+            @endif
+            @endrole
+
+          </tr>
           @endforeach
 
         </tbody>
@@ -62,7 +103,7 @@
 </div>
 <!-- end row -->
 
-<div id="tambah-modal" class="modal-demo">
+<div id="view-image-modal" class="modal-demo">
   <button type="button" class="close" onclick="Custombox.close();">
     <span>&times;</span><span class="sr-only">Close</span>
   </button>
@@ -70,103 +111,17 @@
   <div class="custom-modal-text">
 
     <div class="text-center">
-      <h4 class="text-uppercase font-bold mb-0">Tambah Pelanggaran Baru</h4>
+      <h4 class="text-uppercase font-bold mb-0">Foto KTP Pelanggar</h4>
     </div>
-    <div class="p-20 text-left">
-      <form class="form-horizontal m-t-20" enctype="multipart/form-data" action="{{route('restok.store')}}" method="POST">
-        {{csrf_field()}}
+    <div class="p-20 ">
 
-        <div class="form-group">
-          <label for="">Pilih Barang</label>
-          <div class="col-xs-12">
-            <select required class="form-control" id="id_barang" name="id">
-              <option selected disabled>..pilih..</option>
-             
-            </select>
-          </div>
+      <div class="m-b-20" id="">
+        <div class="load">
         </div>
 
-
-        <div class="form-group">
-          <label for="">Stok Tersedia</label>
-          <div class="col-xs-12">
-            <input class="form-control" required readonly id="stok_tersedia" type="number" min="0" autocomplete="off" name="stok" required="" placeholder="Stok Barang">
-          </div>
+        <div class="m-b-20" id="img_view">
         </div>
-
-        <div class="form-group">
-          <label for="">Stok Permintaan</label>
-          <div class="col-xs-12">
-            <input class="form-control" type="number" min="0" autocomplete="off" name="permintaan_stok" required="" placeholder="Stok Barang">
-          </div>
-        </div>
-
-
-        <div class="form-group text-center m-t-30">
-          <div class="col-xs-12">
-            <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit">Tambah</button>
-          </div>
-        </div>
-
-
-      </form>
-
-    </div>
-  </div>
-
-</div>
-
-<div id="edit-modal" class="modal-demo">
-  <button type="button" class="close" onclick="Custombox.close();">
-    <span>&times;</span><span class="sr-only">Close</span>
-  </button>
-
-  <div class="custom-modal-text">
-
-    <div class="text-center">
-      <h4 class="text-uppercase font-bold mb-0">Ubah Pengajuan</h4>
-    </div>
-    <div class="p-20 text-left">
-      <form class="form-horizontal m-t-20" enctype="multipart/form-data" action="{{route('restok.update')}}" method="POST">
-        {{csrf_field()}}
-
-        <input type="hidden" name="id" id="edit_id">
-
-        <div class="form-group">
-          <label for="">Pilih Barang</label>
-          <div class="col-xs-12">
-            <select required class="form-control" id="edit_id_barang" name="id_barang">
-              <option selected disabled>..pilih..</option>
-             
-            </select>
-          </div>
-        </div>
-
-
-        <div class="form-group">
-          <label for="">Stok Tersedia</label>
-          <div class="col-xs-12">
-            <input class="form-control" required readonly id="edit_stok_tersedia" type="number" min="0" autocomplete="off" name="stok" required="" placeholder="Stok Barang">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="">Stok Permintaan</label>
-          <div class="col-xs-12">
-            <input class="form-control" type="number" min="0" autocomplete="off" id="edit_permintaan_stok" name="permintaan_stok" required="" placeholder="Stok Barang">
-          </div>
-        </div>
-
-
-        <div class="form-group text-center m-t-30">
-          <div class="col-xs-12">
-            <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit">Ubah</button>
-          </div>
-        </div>
-
-
-      </form>
-
+      </div>
     </div>
   </div>
 
@@ -180,15 +135,15 @@
   <div class="custom-modal-text">
 
     <div class="text-center">
-      <h4 class="text-uppercase font-bold mb-0">Hapus Permintaan Stok Barang</h4>
+      <h4 class="text-uppercase font-bold mb-0">Hapus Pelanggaran Ini</h4>
     </div>
     <div class="p-20">
 
-      <form class="form-horizontal m-t-20" enctype="multipart/form-data" action="{{route('restok.hapus')}}" method="POST">
+      <form class="form-horizontal m-t-20" enctype="multipart/form-data" action="{{route('pelanggaran.hapus')}}" method="POST">
         {{csrf_field()}}
         <div>
           <input type="hidden" id='id_hapus' name='id'>
-          <h5 id="exampleModalLabel">Apakah anda yakin ingin mengapus permintaan ini?</h5>
+          <h5 id="exampleModalLabel">Apakah anda yakin ingin mengapus Pelanggaran Ini?</h5>
         </div>
 
         <div class="form-group text-center m-t-30">
@@ -267,26 +222,13 @@
 </div>
 
 <script type="text/javascript">
-  $('.modal_edit').click(function() {
-    var id = $(this).data('id');
-    $('#edit_id').val(id)
+  $('.view_image').click(function() {
+    $('#img_view').html('')
+    var foto_path = $(this).data('path');
 
-    $.ajax({
-      url: '{{url("restok/edit")}}/' + id,
-      type: 'GET',
-      dataType: 'json',
-      success: 'success',
-      success: function(data) {
-
-        $('#edit_id').val(id)
-        $('#edit_id_barang').val(data['id_barang'])
-        $('#edit_stok_tersedia').val(data['barang'][0]['stok'])
-        $('#edit_permintaan_stok').val(data['permintaan_stok'])
-      },
-      error: function(data) {
-        toastr.error('Gagal memanggil data! ')
-      }
-    })
+    $('#load').append('<i class="fa fa-spin fa-circle-o-notch"></i>')
+    $('#img_view').append('<img src="storage/' + foto_path + '"  class="m-b-20 thumb-img" alt="work-thumbnail">')
+    $('#load').html('')
   });
 
   $('.modal_terima').click(function() {

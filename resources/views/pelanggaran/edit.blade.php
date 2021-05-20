@@ -4,7 +4,7 @@
 <div class="row">
   <div class="col-12">
     <div class="card-box">
-
+      <a href="{{route('pelanggaran.index')}}" class="btn btn-danger m-l-10 waves-light mb-3">Kembali</a>
 
       @if(\Session::has('alert'))
       <div class="alert alert-danger">
@@ -18,8 +18,10 @@
       </div>
       @endif
 
-      <form class="form-horizontal m-t-20" enctype="multipart/form-data" action="{{route('pelanggaran.store')}}" method="POST">
+      <form class="form-horizontal m-t-20" enctype="multipart/form-data" action="{{route('pelanggaran.update')}}" method="POST">
         {{csrf_field()}}
+
+        <input type="hidden" value="{{$pelanggaran['id']}}" name="id">
 
         <div class="col-lg-12 col-xs-12 row">
           <div class="col-lg-6 col-xs-12">
@@ -27,7 +29,7 @@
               <label for="">Nomor KTP</label>
               <div class="col-xs-12">
                 <div class="input-group-append">
-                  <input class="form-control" id="no_ktp" type="text" autocomplete="off" name="no_ktp" required="" placeholder="Nomor KTP">
+                  <input class="form-control" value="{{$pelanggaran['no_ktp']}}" id="no_ktp" type="text" autocomplete="off" name="no_ktp" required="" placeholder="Nomor KTP">
                   <a href="#" class="cariKtp"><span class="input-group-text btn-success"><i class="mdi mdi-account-search"></i></span></a>
 
                 </div>
@@ -54,7 +56,7 @@
             <div class="form-group">
               <label for="">Nama Lengkap</label>
               <div class="col-xs-12">
-                <input class="form-control" type="text" autocomplete="off" name="nama" required="" placeholder="Nama Pelanggar">
+                <input class="form-control" value="{{$pelanggaran['nama']}}" type="text" autocomplete="off" name="nama" required="" placeholder="Nama Pelanggar">
               </div>
             </div>
           </div>
@@ -65,7 +67,10 @@
             <div class="form-group">
               <label for="">Tempat Lahir</label>
               <div class="col-xs-12">
-                <input class="form-control" type="text" autocomplete="off" name="tempat_lahir" required="" placeholder="Sesuai KTP">
+                @php
+                $ttl = explode("-",$pelanggaran['ttl']);
+                @endphp
+                <input class="form-control" value="{{$ttl[0]}}" type="text" autocomplete="off" name="tempat_lahir" required="" placeholder="Sesuai KTP">
               </div>
             </div>
           </div>
@@ -74,7 +79,7 @@
             <div class="form-group">
               <label for="">Tanggal Lahir</label>
               <div class="col-xs-12">
-                <input class="form-control datepicker-autoclose" type="text" autocomplete="off" name="tgl_lahir" required="" placeholder="dd/mm/yyyy">
+                <input class="form-control datepicker-autoclose" value="{{$ttl[1]}}" type="text" autocomplete="off" name="tgl_lahir" required="" placeholder="dd/mm/yyyy">
               </div>
             </div>
           </div>
@@ -87,8 +92,8 @@
               <label for="">Jenis Kelamin</label>
               <div class="col-xs-12">
                 <select required class="form-control" name="jns_kelamin">
-                  <option value="lk">Laki-Laki</option>
-                  <option value="pr">Perempuan</option>
+                  <option {{$pelanggaran['jns_kelamin'] == 'lk' ? 'selected' : '' }} value="lk">Laki-Laki</option>
+                  <option {{$pelanggaran['jns_kelamin'] == 'pr' ? 'selected' : '' }} value="pr">Perempuan</option>
                 </select>
               </div>
             </div>
@@ -99,12 +104,12 @@
               <label for="">Agama</label>
               <div class="col-xs-12">
                 <select required class="form-control" name="agama">
-                  <option value="Islam">Islam</option>
-                  <option value="Protestan">Protestan</option>
-                  <option value="Katolik">Katolik</option>
-                  <option value="Hindu">Hindu</option>
-                  <option value="Buddha">Buddha</option>
-                  <option value="Khonghucu">Khonghucu</option>
+                  <option {{$pelanggaran['agama'] == 'Islam' ? 'selected' : '' }} value="Islam">Islam</option>
+                  <option {{$pelanggaran['agama'] == 'Protestan' ? 'selected' : '' }} value="Protestan">Protestan</option>
+                  <option {{$pelanggaran['agama'] == 'Katolik' ? 'selected' : '' }} value="Katolik">Katolik</option>
+                  <option {{$pelanggaran['agama'] == 'Hindu' ? 'selected' : '' }} value="Hindu">Hindu</option>
+                  <option {{$pelanggaran['agama'] == 'Buddha' ? 'selected' : '' }} value="Buddha">Buddha</option>
+                  <option {{$pelanggaran['agama'] == 'Khonghucu' ? 'selected' : '' }} value="Khonghucu">Khonghucu</option>
                 </select>
               </div>
             </div>
@@ -117,7 +122,7 @@
             <div class="form-group">
               <label for="">Pekerjaan</label>
               <div class="col-xs-12">
-                <input class="form-control" type="text" autocomplete="off" name="pekerjaan" required="" placeholder="Pekerjaan">
+                <input class="form-control" value="{{$pelanggaran['pekerjaan']}}" type="text" autocomplete="off" name="pekerjaan" required="" placeholder="Pekerjaan">
               </div>
             </div>
           </div>
@@ -126,7 +131,7 @@
             <div class="form-group">
               <label for="">Alamat</label>
               <div class="col-xs-12">
-                <textarea class="form-control" type="text" autocomplete="off" name="alamat" placeholder="Alamat Sesuai KTP" required=""></textarea>
+                <textarea class="form-control" type="text" autocomplete="off" name="alamat" placeholder="Alamat Sesuai KTP" required="">{{$pelanggaran['alamat']}}</textarea>
 
               </div>
             </div>
@@ -142,7 +147,7 @@
                 <select required class="form-control" name="nama_perda" id="nama_perda">
                   <option selected disabled>Silahkan Pilih...</option>
                   @foreach ($perda as $key => $value)
-                  <option value="{{$value->id}}">{{$value->nama_perda}}</option>
+                  <option {{$pelanggaran['nama_perda'] == $value->id ? 'selected' : '' }} value="{{$value->id}}">{{$value->nama_perda}}</option>
                   @endforeach
                 </select>
               </div>
@@ -155,7 +160,9 @@
               <div class="col-xs-12">
                 <select required class="form-control" id="perdaPelanggaran" name="perdaPelanggaran">
                   <option selected disabled>Silahkan Pilih...</option>
-
+                  @foreach ($getPerda['pelanggarans'] as $key => $value)
+                  <option {{$pelanggaran['pelanggaran'] == $value->nama ? 'selected' : '' }} value="{{$value->nama}}">{{$value->nama}}</option>
+                  @endforeach
                 </select>
               </div>
             </div>
@@ -171,7 +178,9 @@
               <div class="col-xs-12">
                 <select required class="form-control" id="jenisSangsi" name="jenisSangsi">
                   <option selected disabled>Silahkan Pilih...</option>
-
+                  @foreach ($getPerda['sangsis'] as $key => $value)
+                  <option {{$pelanggaran['sangsi'] == $value->nama ? 'selected' : '' }} value="{{$value->nama}}">{{$value->nama}}</option>
+                  @endforeach
                 </select>
               </div>
             </div>
@@ -181,7 +190,7 @@
             <div class="form-group">
               <label for="">Nomor Hp</label>
               <div class="col-xs-12">
-                <input class="form-control" type="text" autocomplete="off" name="no_hp" required="" placeholder="Nomor Hp">
+                <input class="form-control" value="{{$pelanggaran['nomor_hp']}}" type="text" autocomplete="off" name="no_hp" required="" placeholder="Nomor Hp">
               </div>
             </div>
           </div>
@@ -193,7 +202,7 @@
             <div class="form-group">
               <label for="">Lokasi Pelanggaran</label>
               <div class="col-xs-12">
-                <textarea class="form-control" type="text" autocomplete="off" name="lokasi" placeholder="Lokasi Pelanggaran" required=""></textarea>
+                <textarea class="form-control" type="text" autocomplete="off" name="lokasi" placeholder="Lokasi Pelanggaran" required="">{{$pelanggaran['lokasi']}}</textarea>
               </div>
             </div>
           </div>
@@ -202,14 +211,14 @@
             <div class="form-group">
               <label for="">Keterangan</label>
               <div class="col-xs-12">
-                <textarea class="form-control" type="text" autocomplete="off" name="keterangan" placeholder="Keterangan Pelanggaran" required=""></textarea>
+                <textarea class="form-control" type="text" autocomplete="off" name="keterangan" placeholder="Keterangan Pelanggaran" required="">{{$pelanggaran['keterangan']}}</textarea>
               </div>
             </div>
           </div>
 
         </div>
 
-
+        <!-- 
         <div class="col-lg-12 col-xs-12">
           <div class="form-group">
             <label for="">Foto KTP</label>
@@ -217,13 +226,13 @@
               <input type="file" required name="foto_ktp" class="dropify" data-max-file-size="5M" accept=".png, .jpg, .jpeg" />
             </div>
           </div>
-        </div>
+        </div> -->
 
 
 
         <div class="form-group text-center m-t-30">
           <div class="col-xs-12">
-            <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit">Tambah</button>
+            <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit">Update</button>
           </div>
         </div>
 
@@ -243,7 +252,7 @@
 
     if (no_ktp.length != 0) {
       if ($.fn.dataTable.isDataTable('#table_info_pelanggaran')) {
-        
+
         dataTable = $('#table_info_pelanggaran').DataTable();
       } else {
         dataTable = $('#table_info_pelanggaran').DataTable({
@@ -291,8 +300,6 @@
 
 
   });
-
-
 
   document.getElementById('nama_perda').addEventListener("change", function() {
     $('#perdaPelanggaran').html('')

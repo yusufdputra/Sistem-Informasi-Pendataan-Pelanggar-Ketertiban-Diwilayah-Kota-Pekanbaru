@@ -9,5 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Perda extends Model
 {
     use HasFactory, SoftDeletes;
-
+    public function pelanggaran()
+    {
+        return $this->belongsToMany(Pelanggaran::class);
+    }
 }

@@ -130,7 +130,7 @@ Route::group(['middleware' => ['role:admin|pegawai']], function () {
 Route::group(['middleware' => ['role:petugas|admin|pimpinan']], function () {  
     // barang pelanggaran
     Route::get('/pelanggaran', [PelanggaranController::class, 'index'])->name('pelanggaran.index');
-  
+    
     // kelola cetak
     Route::post('/cetak/cetak', [CetakController::class, 'cetak'])->name('cetak.cetak');
 });
@@ -138,9 +138,17 @@ Route::group(['middleware' => ['role:petugas|admin|pimpinan']], function () {
 Route::group(['middleware' => ['role:petugas']], function () {  
     // barang pelanggaran
     Route::get('/pelanggaran/baru', [PelanggaranController::class, 'baru'])->name('pelanggaran.baru');
+    Route::post('/pelanggaran/store', [PelanggaranController::class, 'store'])->name('pelanggaran.store');
+    Route::get('/pelanggaran/edit/{id}', [PelanggaranController::class, 'edit'])->name('pelanggaran.edit');
+    Route::post('/pelanggaran/update', [PelanggaranController::class, 'update'])->name('pelanggaran.update');
+    Route::POST('/pelanggaran/hapus/', [PelanggaranController::class, 'hapus'])->name('pelanggaran.hapus');
   
     // kelola cetak
     Route::post('/cetak/cetak', [CetakController::class, 'cetak'])->name('cetak.cetak');
+
+    // ajax 
+    Route::get('/getPerda/{id}', [PerdaController::class, 'getPerdaById'])->name('getPerda');
+    Route::get('/getPelanggaran/{no_ktp}', [PelanggaranController::class, 'getPelanggaran'])->name('getPelanggaran');
 });
 
 
