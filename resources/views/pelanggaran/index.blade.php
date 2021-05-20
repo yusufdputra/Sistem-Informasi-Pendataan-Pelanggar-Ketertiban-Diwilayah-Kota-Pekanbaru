@@ -12,9 +12,12 @@
 
         @endrole
 
+        @role('admin|pimpinan')
+
         <div class="form-group ">
           <a href="#cetak-modal" data-animation="sign" data-plugin="custommodal" data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-secondary m-l-10 waves-light  ">Cetak</a>
         </div>
+        @endrole
       </div>
       @if(\Session::has('alert'))
       <div class="alert alert-danger">
