@@ -18,7 +18,12 @@ class PelanggaranController extends Controller
     public function index()
     {
         $title = "Kelola Data Pelanggaran";
-        $pelanggaran = Pelanggaran::with('user', 'perda')->orderBy('status', 'ASC')->get();
+       
+        if (Auth::user()->roles[0]['name'] == 'pimpinan') {
+            $pelanggaran = Pelanggaran::with('user', 'perda')->where('status', 1)->orderBy('status', 'ASC')->get();
+        }else{
+            $pelanggaran = Pelanggaran::with('user', 'perda')->orderBy('status', 'ASC')->get();
+        }
         return view('pelanggaran.index', compact('pelanggaran', 'title'));
     }
     public function baru()

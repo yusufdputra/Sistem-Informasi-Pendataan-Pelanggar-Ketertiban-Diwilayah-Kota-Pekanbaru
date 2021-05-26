@@ -24,15 +24,17 @@ class PerdaController extends Controller
         foreach ($perda as $key => $value) {
             // pelanggaran
             $pelanggaran = unserialize($value->pelanggaran);
-
+           
             if (count($pelanggaran)  == 0) {
                 $pelanggarans[$key] = null;
             } else {
                 foreach ($pelanggaran as $k => $pel) {
                     $nama = PerdaPelanggaran::find($pel)->nama;
+                    
                     $pelanggarans[$key][$k] = $nama;
                 }
             }
+            
             // sangsi
             $sangsi = unserialize($value->jenis_sangsi);
             if (count($sangsi)  == 0) {
@@ -43,6 +45,7 @@ class PerdaController extends Controller
                     $sangsis[$key][$k] = $nama;
                 }
             }
+
         }
         return view('admin.perda.index', compact('perda', 'title', 'pelanggarans', 'sangsis'));
     }
