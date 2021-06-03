@@ -26,18 +26,19 @@ class PerdaSangsiController extends Controller
 
                 Perda::where('id', $request->id)
                     ->update([
-                        'jenis_sangsi' => serialize($sangsi_already)
+                        'jenis_sangsi' => serialize($sangsi_already),
+                        'updated_at' => Carbon::now(),
                     ]);
                 return redirect()->back()->with('success', 'Sangsi Peraturan berhasil ditambah');
             } else {
                 return redirect()->back()->with('alert', 'Sangsi Peraturan gagal ditambah');
             }
         } catch (\Throwable $th) {
-            return redirect()->back()->with('alert', 'Sangsi Peraturan gagal ditambah ' );
+            return redirect()->back()->with('alert', 'Sangsi Peraturan gagal ditambah ');
         }
     }
 
-    
+
     public function hapus(Request $request)
     {
         try {
@@ -74,6 +75,10 @@ class PerdaSangsiController extends Controller
         PerdaSangsi::where('id', $request->id)
             ->update([
                 'nama' => $request->nama
+            ]);
+        Perda::where('id', $request->id_perda)
+            ->update([
+                'updated_at' => Carbon::now(),
             ]);
 
         return redirect()->back()->with('success', 'Sangsi Berhasil diubah');

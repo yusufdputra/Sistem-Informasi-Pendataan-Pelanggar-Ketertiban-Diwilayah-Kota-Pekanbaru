@@ -12,7 +12,6 @@ class PerdaPelanggaranController extends Controller
     public function store(Request $request)
     {
         try {
-
             $query = new PerdaPelanggaran;
             $query->nama = $request->nama;
             $query->created_at = Carbon::now();
@@ -27,7 +26,8 @@ class PerdaPelanggaranController extends Controller
 
                 Perda::where('id', $request->id)
                     ->update([
-                        'pelanggaran' => serialize($pelanggaran_already)
+                        'pelanggaran' => serialize($pelanggaran_already),
+                        'updated_at' => Carbon::now(),
                     ]);
                 return redirect()->back()->with('success', 'Pelanggaran Peraturan berhasil ditambah');
             } else {
@@ -74,6 +74,10 @@ class PerdaPelanggaranController extends Controller
         PerdaPelanggaran::where('id', $request->id)
             ->update([
                 'nama' => $request->nama
+            ]);
+        Perda::where('id', $request->id_perda)
+            ->update([
+                'updated_at' => Carbon::now(),
             ]);
 
         return redirect()->back()->with('success', 'Pelanggaran Berhasil diubah');

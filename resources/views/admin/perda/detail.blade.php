@@ -209,7 +209,7 @@
       <form class="form-horizontal m-t-20" id="form-edit" enctype="multipart/form-data" method="POST">
         {{csrf_field()}}
         <input type="hidden" name="id" id="edit_id">
-
+        <input type="hidden" name="id_perda" value="{{$perda->id}}" id="">
         <div class="form-group">
           <label>Nama</label>
           <div class="col-xs-12">

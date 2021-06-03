@@ -17,7 +17,7 @@ class PerdaController extends Controller
     public function index()
     {
         $title = "Kelola Peraturan Daerah";
-        $perda = Perda::orderBy('created_at', 'ASC')->get();
+        $perda = Perda::orderBy('updated_at', 'DESC')->get();
 
         $pelanggarans = array();
         $sangsis = array();
@@ -60,6 +60,7 @@ class PerdaController extends Controller
                 'pelanggaran' => serialize($null),
                 'jenis_sangsi' => serialize($null),
                 'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]);
             if ($query) {
                 return redirect()->back()->with('success', 'Peraturan berhasil ditambah, silahkan lengkapi');

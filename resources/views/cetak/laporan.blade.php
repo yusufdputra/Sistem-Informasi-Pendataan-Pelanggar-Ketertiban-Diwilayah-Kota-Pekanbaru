@@ -106,7 +106,7 @@
                 <td>{{$value->alamat}}</td>
                 <td>{{$value->nomor_hp}}</td>
                 <td>{{$value->perda[0]['nama_perda']}} - {{$value->pelanggaran}}</td>
-                <td>{{date("d-M-Y H:m ", strtotime(($value->created_at)))}} WIB</td>
+                <td>{{date("d-M-Y H:i ", strtotime(($value->created_at)))}} WIB</td>
                 <td>{{$value->lokasi}}</td>
                 <td>{{$value->keterangan}}</td>
                 <td>

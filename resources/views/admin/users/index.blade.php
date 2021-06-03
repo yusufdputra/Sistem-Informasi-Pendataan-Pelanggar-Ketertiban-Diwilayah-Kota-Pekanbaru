@@ -30,9 +30,10 @@
           <tr>
             <th>No</th>
             <th>Nama</th>
-            <th>Username</th>
+            <th>Nama Pengguna</th>
             <th>Nomor Hp</th>
-            <th>Action</th>
+            <th>Email</th>
+            <th>Aksi</th>
           </tr>
         </thead>
 
@@ -45,13 +46,14 @@
             <td>{{$value->nama}}</td>
             <td>{{$value->username}}</td>
             <td>{{$value->nomor_hp}}</td>
+            <td>{{$value->email}}</td>
 
             <td>
               <a href="#edit-modal" data-animation="sign" data-plugin="custommodal" data-id='{{$value->id}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-success btn-sm modal_edit"><i class="fa fa-edit"></i></a>
 
               <a href="#hapus-modal" data-animation="sign" data-plugin="custommodal" data-id='{{$value->id}}' data-iduser='{{$value->id_user}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-danger btn-sm hapus"><i class="fa fa-trash"></i></a>
 
-              <a href="#edit-password" data-animation="sign" data-plugin="custommodal" data-id='{{$value->id}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-warning btn-sm modal_pw"><i class="fa fa-lock"></i></a>
+              <!-- <a href="#edit-password" data-animation="sign" data-plugin="custommodal" data-id='{{$value->id}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-warning btn-sm modal_pw"><i class="fa fa-lock"></i></a> -->
             </td>
           </tr>
 
@@ -87,7 +89,7 @@
         </div>
 
         <div class="form-group">
-          <label for="">Username</label>
+          <label for="">Nama Pengguna</label>
           <div class="col-xs-12">
             <input class="form-control" type="text" autocomplete="off" name="username" required="" placeholder="Nama">
           </div>
@@ -100,16 +102,23 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label for="">Email</label>
+          <div class="col-xs-12">
+            <input class="form-control" type="email"  autocomplete="off" name="email" required="" placeholder="Alamat Email">
+          </div>
+        </div>
+
         <input type="hidden" value="{{$jenis}}" name="role">
 
 
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="">Password</label>
           <div class="col-xs-12">
             <input class="form-control" autocomplete="off" type="text" name="password" required="" placeholder="Password">
           </div>
-        </div>
+        </div> -->
 
 
         <div class="form-group text-center m-t-30">
@@ -141,6 +150,7 @@
       <form class="form-horizontal m-t-20" action="{{route('user.update')}}" method="POST">
         {{csrf_field()}}
         <input type="hidden" name="id" id="edit_id">
+        <input type="hidden" name="old_email" id="edit_old_email">
 
 
         <div class="form-group">
@@ -153,6 +163,13 @@
           <label for="">Nomor Hp</label>
           <div class="col-xs-12">
             <input class="form-control" type="text" autocomplete="off" id="edit_nomor_hp" name="nomor_hp" required="" placeholder="Nomor Hp">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="">Email</label>
+          <div class="col-xs-12">
+            <input class="form-control" type="email" id="edit_email" autocomplete="off" name="email" required="" placeholder="Alamat Email">
           </div>
         </div>
 
@@ -261,6 +278,8 @@
       success: function(data) {
         $('#edit_id').val(id)
         $('#edit_nama').val(data['nama'])
+        $('#edit_email').val(data['email'])
+        $('#edit_old_email').val(data['email'])
         $('#edit_nomor_hp').val(data['nomor_hp'])
       },
       error: function(data) {

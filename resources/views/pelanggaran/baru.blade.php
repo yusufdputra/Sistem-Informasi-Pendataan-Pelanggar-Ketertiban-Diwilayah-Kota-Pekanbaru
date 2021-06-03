@@ -4,7 +4,7 @@
 <div class="row">
   <div class="col-12">
     <div class="card-box">
-    <a href="{{route('pelanggaran.index')}}" class="btn btn-danger m-l-10 waves-light mb-3">Kembali</a>
+      <a href="{{route('pelanggaran.index')}}" class="btn btn-danger m-l-10 waves-light mb-3">Kembali</a>
 
       @if(\Session::has('alert'))
       <div class="alert alert-danger">
@@ -27,13 +27,12 @@
               <label for="">Nomor KTP</label>
               <div class="col-xs-12">
                 <div class="input-group-append">
-                  <input class="form-control" id="no_ktp" type="text" autocomplete="off" name="no_ktp" required="" placeholder="Nomor KTP">
+                  <input class="form-control" id="no_ktp" type="text" autocomplete="off" name="no_ktp" required="" placeholder="Sesuai KTP">
                   <a href="#" class="cariKtp"><span class="input-group-text btn-success"><i class="mdi mdi-account-search"></i></span></a>
 
                 </div>
               </div>
               <div id="info_pelanggaran" style="display: none;" class="alert alert-info fade show m-b-0 mt-2">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 <h4>Catatan Pelanggaran!</h4>
                 <table id="table_info_pelanggaran" class="table table-sm " width="100%">
                   <thead>
@@ -54,7 +53,7 @@
             <div class="form-group">
               <label for="">Nama Lengkap</label>
               <div class="col-xs-12">
-                <input class="form-control" type="text" autocomplete="off" name="nama" required="" placeholder="Nama Pelanggar">
+                <input class="form-control" type="text" autocomplete="off" id="nama" name="nama" required="" placeholder="Sesuai KTP">
               </div>
             </div>
           </div>
@@ -65,7 +64,7 @@
             <div class="form-group">
               <label for="">Tempat Lahir</label>
               <div class="col-xs-12">
-                <input class="form-control" type="text" autocomplete="off" name="tempat_lahir" required="" placeholder="Sesuai KTP">
+                <input class="form-control" type="text" autocomplete="off" id="tempat_lahir" name="tempat_lahir" required="" placeholder="Sesuai KTP">
               </div>
             </div>
           </div>
@@ -74,7 +73,7 @@
             <div class="form-group">
               <label for="">Tanggal Lahir</label>
               <div class="col-xs-12">
-                <input class="form-control datepicker-autoclose" type="text" autocomplete="off" name="tgl_lahir" required="" placeholder="dd/mm/yyyy">
+                <input class="form-control datepicker-autoclose" type="text" id="tgl_lahir" autocomplete="off" name="tgl_lahir" required="" placeholder="Sesuai KTP (dd/mm/yyyy)">
               </div>
             </div>
           </div>
@@ -86,7 +85,7 @@
             <div class="form-group">
               <label for="">Jenis Kelamin</label>
               <div class="col-xs-12">
-                <select required class="form-control" name="jns_kelamin">
+                <select required class="form-control" id="jns_kelamin" name="jns_kelamin">
                   <option value="lk">Laki-Laki</option>
                   <option value="pr">Perempuan</option>
                 </select>
@@ -98,7 +97,7 @@
             <div class="form-group">
               <label for="">Agama</label>
               <div class="col-xs-12">
-                <select required class="form-control" name="agama">
+                <select required class="form-control" id="agama" name="agama">
                   <option value="Islam">Islam</option>
                   <option value="Protestan">Protestan</option>
                   <option value="Katolik">Katolik</option>
@@ -117,7 +116,7 @@
             <div class="form-group">
               <label for="">Pekerjaan</label>
               <div class="col-xs-12">
-                <input class="form-control" type="text" autocomplete="off" name="pekerjaan" required="" placeholder="Pekerjaan">
+                <input class="form-control" type="text" autocomplete="off" id="pekerjaan" name="pekerjaan" required="" placeholder="Sesuai KTP">
               </div>
             </div>
           </div>
@@ -126,12 +125,32 @@
             <div class="form-group">
               <label for="">Alamat</label>
               <div class="col-xs-12">
-                <textarea class="form-control" type="text" autocomplete="off" name="alamat" placeholder="Alamat Sesuai KTP" required=""></textarea>
+                <textarea class="form-control" type="text" autocomplete="off" id="alamat" name="alamat" placeholder="Sesuai KTP" required=""></textarea>
 
               </div>
             </div>
           </div>
 
+        </div>
+
+        <div class="col-lg-12 col-xs-12 row">
+          <div class="col-lg-6 col-xs-12">
+            <div class="form-group">
+              <label for="">Keterangan</label>
+              <div class="col-xs-12">
+                <textarea class="form-control" type="text" autocomplete="off" name="keterangan" placeholder="Keterangan Pelanggaran" required=""></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-xs-12">
+            <div class="form-group">
+              <label for="">Lokasi Pelanggaran</label>
+              <div class="col-xs-12">
+                <textarea class="form-control" type="text" autocomplete="off" name="lokasi" placeholder="Lokasi Pelanggaran" required=""></textarea>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="col-lg-12 col-xs-12 row">
@@ -188,28 +207,6 @@
 
         </div>
 
-        <div class="col-lg-12 col-xs-12 row">
-          <div class="col-lg-6 col-xs-12">
-            <div class="form-group">
-              <label for="">Lokasi Pelanggaran</label>
-              <div class="col-xs-12">
-                <textarea class="form-control" type="text" autocomplete="off" name="lokasi" placeholder="Lokasi Pelanggaran" required=""></textarea>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6 col-xs-12">
-            <div class="form-group">
-              <label for="">Keterangan</label>
-              <div class="col-xs-12">
-                <textarea class="form-control" type="text" autocomplete="off" name="keterangan" placeholder="Keterangan Pelanggaran" required=""></textarea>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-
         <div class="col-lg-12 col-xs-12">
           <div class="form-group">
             <label for="">Foto KTP</label>
@@ -242,8 +239,15 @@
     var no_ktp = document.getElementById('no_ktp').value
 
     if (no_ktp.length != 0) {
+      $('#nama').val('')
+      $('#tempat_lahir').val('')
+      $('#tgl_lahir').val('')
+      $('#jns_kelamin').val()
+      $('#agama').val()
+      $('#pekerjaan').val('')
+      $('#alamat').val('')
       if ($.fn.dataTable.isDataTable('#table_info_pelanggaran')) {
-        
+
         dataTable = $('#table_info_pelanggaran').DataTable();
       } else {
         dataTable = $('#table_info_pelanggaran').DataTable({
@@ -257,6 +261,8 @@
         dataType: 'json',
         success: 'success',
         success: function(data) {
+
+
           if (data.length == 0) {
             toastr.error('Tidak Ada Pelanggaran Ditemukan')
             info_palanggaran.style.display = "none";
@@ -266,6 +272,18 @@
               "July", "August", "September", "October", "November", "December"
             ];
             data.forEach(element => {
+              // split ttl
+              var ttl = element['ttl'];
+              var split = ttl.split("-");
+              // isi biodata terakhir
+              $('#nama').val(element['nama'])
+              $('#tempat_lahir').val(split[0])
+              $('#tgl_lahir').val(split[1])
+              $('#jns_kelamin').val(element['jns_kelamin'])
+              $('#agama').val(element['agama'])
+              $('#pekerjaan').val(element['pekerjaan'])
+              $('#alamat').val(element['alamat'])
+
               var date = new Date(element['created_at'])
               var getDate = date.getDate() + '-' + monthNames[date.getMonth()] + '-' + date.getFullYear()
               dataTable.row.add([

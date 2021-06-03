@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendMailToPegawai extends Mailable
+class SendMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $detail;
@@ -28,6 +28,6 @@ class SendMailToPegawai extends Mailable
      */
     public function build()
     {
-        return $this->subject('Agenda Pegawai')->view('admin.mail.sendMail');
+        return $this->subject('Lupa Kata Sandi')->view('auth.passwords.sendMail');
     }
 }

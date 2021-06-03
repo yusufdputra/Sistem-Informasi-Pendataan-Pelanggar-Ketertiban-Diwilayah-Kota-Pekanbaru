@@ -12,6 +12,7 @@ use App\Http\Controllers\PerdaPelanggaranController;
 use App\Http\Controllers\PerdaSangsiController;
 use App\Http\Controllers\RabController;
 use App\Http\Controllers\RabTempController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\RestokController;
 use App\Http\Controllers\UserManagementController;
 use App\Models\Barang;
@@ -36,8 +37,12 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-// admin
+Route::get('/password', [ResetPasswordController::class, 'index'])->name('password.index');
+Route::post('/password/kirim', [ResetPasswordController::class, 'kirim'])->name('password.kirim');
+Route::get('/password/forgot/{token}', [ResetPasswordController::class, 'forgot'])->name('password.forgot');
+Route::post('/password/ubah', [ResetPasswordController::class, 'ubah'])->name('password.ubah');
 
+// admin
 Route::group(['middleware' => ['role:admin']], function () {
     // user management
     Route::get('/user/{jenis}', [UserManagementController::class, 'index'])->name('user.index');
@@ -72,14 +77,14 @@ Route::group(['middleware' => ['role:admin']], function () {
 
 });
 
-
-
 Route::group(['middleware' => ['role:petugas|admin|pimpinan']], function () {  
     // barang pelanggaran
     Route::get('/pelanggaran', [PelanggaranController::class, 'index'])->name('pelanggaran.index');
     
     // kelola cetak
     Route::post('/cetak', [CetakController::class, 'cetak'])->name('cetak');
+    
+
 });
 
 Route::group(['middleware' => ['role:petugas']], function () {  

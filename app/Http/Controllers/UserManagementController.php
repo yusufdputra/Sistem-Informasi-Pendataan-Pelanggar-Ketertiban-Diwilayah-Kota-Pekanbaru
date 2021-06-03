@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserManagementController extends Controller
 {
@@ -15,7 +16,7 @@ class UserManagementController extends Controller
 
     public function index($jenis)
     {
-        $title = "Kelola Data User " . strtoupper($jenis);
+        $title = "Kelola Data Pengguna " . strtoupper($jenis);
         $users = User::where('tipe_user', $jenis)->get();
 
         return view('admin.users.index', compact('title', 'users', 'jenis'));
@@ -23,32 +24,36 @@ class UserManagementController extends Controller
 
     public function store(Request $request)
     {
-        // cek username
+        // cek username or email
         try {
-            $cek = User::where('username', $request->username);
-            if (!$cek->exists()) {
+            $username = User::where('username', $request->username);
+            $email = User::where('email', $request->email);
+            if ($username->exists()) {
+                return redirect()->back()->with('alert', 'Pengguna gagal ditambah, Nama Pengguna sudah terdaftar');
+            }
+            if ($email->exists()) {
+                return redirect()->back()->with('alert', 'Pengguna gagal ditambah, Email sudah terdaftar');
+            }
 
-                $user = User::create([
-                    'username' => $request->username,
-                    'password' => bcrypt($request->password),
-                    'nama' => $request->nama,
-                    'nomor_hp' => $request->nomor_hp,
-                    'tipe_user' => $request->role,
-                    'created_at' => Carbon::now()
-                ]);
+            $user = User::create([
+                'username' => $request->username,
+                'password' => bcrypt($request->username),
+                'nama' => $request->nama,
+                'email' => $request->email,
+                'nomor_hp' => $request->nomor_hp,
+                'tipe_user' => $request->role,
+                'created_at' => Carbon::now()
+            ]);
 
-                $user->assignRole($request->role);
+            $user->assignRole($request->role);
 
-                if ($user) {
-                    return redirect()->back()->with('success', 'User berhasil ditambah');
-                } else {
-                    return redirect()->back()->with('alert', 'User gagal ditambah');
-                }
+            if ($user) {
+                return redirect()->back()->with('success', 'Pengguna berhasil ditambah');
             } else {
-                return redirect()->back()->with('alert', 'User gagal ditambah, Username sudah terdaftar');
+                return redirect()->back()->with('alert', 'Pengguna gagal ditambah');
             }
         } catch (\Throwable $th) {
-            return redirect()->back()->with('alert', 'User gagal ditambah.');
+            return redirect()->back()->with('alert', 'Pengguna gagal ditambah.');
         }
     }
 
@@ -59,17 +64,24 @@ class UserManagementController extends Controller
 
     public function update(Request $request)
     {
+        $email = User::where('email', $request->email);
+
+       
+        if (($request->email != $request->old_email) && $email->exists()) {
+            return redirect()->back()->with('alert', 'Pengguna gagal diubah, Email sudah terdaftar');
+        }
         $value = [
             'nama' => $request->nama,
+            'email' => $request->email,
             'nomor_hp' => $request->nomor_hp,
         ];
         $query = User::where('id', $request->id)
             ->update($value);
 
         if ($query) {
-            return redirect()->back()->with('success', 'User berhasil diubah');
+            return redirect()->back()->with('success', 'Pengguna berhasil diubah');
         } else {
-            return redirect()->back()->with('alert', 'User gagal diubah');
+            return redirect()->back()->with('alert', 'Pengguna gagal diubah');
         }
     }
 
@@ -89,7 +101,7 @@ class UserManagementController extends Controller
 
     public function resetpw(Request $request)
     {
-        $query = User::where('id', $request->id)
+        $query = User::where('id', Auth::user()->id)
             ->update([
                 'password' => bcrypt($request->password)
             ]);
@@ -100,4 +112,5 @@ class UserManagementController extends Controller
             return redirect()->back()->with('alert', 'Password User gagal diubah');
         }
     }
+
 }

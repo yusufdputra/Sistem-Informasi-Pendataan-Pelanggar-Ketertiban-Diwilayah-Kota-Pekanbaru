@@ -20,9 +20,9 @@ class PelanggaranController extends Controller
         $title = "Kelola Data Pelanggaran";
        
         if (Auth::user()->roles[0]['name'] == 'pimpinan') {
-            $pelanggaran = Pelanggaran::with('user', 'perda')->where('status', 1)->orderBy('status', 'ASC')->get();
+            $pelanggaran = Pelanggaran::with('user', 'perda')->where('status', 1)->orderBy('created_at', 'DESC')->get();
         }else{
-            $pelanggaran = Pelanggaran::with('user', 'perda')->orderBy('status', 'ASC')->get();
+            $pelanggaran = Pelanggaran::with('user', 'perda')->orderBy('created_at', 'DESC')->orderBy('status', 'ASC')->get();
         }
         return view('pelanggaran.index', compact('pelanggaran', 'title'));
     }
@@ -35,7 +35,7 @@ class PelanggaranController extends Controller
 
     public function getPelanggaran($ktp)
     {
-        return Pelanggaran::where('no_ktp', $ktp)->get();
+        return Pelanggaran::where('no_ktp', $ktp)->orderBy('created_at', 'DESC')->get();
     }
 
     public function store(Request $request)
