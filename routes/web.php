@@ -37,11 +37,6 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/password', [ResetPasswordController::class, 'index'])->name('password.index');
-Route::post('/password/kirim', [ResetPasswordController::class, 'kirim'])->name('password.kirim');
-Route::get('/password/forgot/{token}', [ResetPasswordController::class, 'forgot'])->name('password.forgot');
-Route::post('/password/ubah', [ResetPasswordController::class, 'ubah'])->name('password.ubah');
-
 // admin
 Route::group(['middleware' => ['role:admin']], function () {
     // user management
@@ -84,6 +79,12 @@ Route::group(['middleware' => ['role:petugas|admin|pimpinan']], function () {
     // kelola cetak
     Route::post('/cetak', [CetakController::class, 'cetak'])->name('cetak');
     
+    // kelola ganti passsword
+    Route::get('/password', [ResetPasswordController::class, 'index'])->name('password.index');
+    Route::post('/password/kirim', [ResetPasswordController::class, 'kirim'])->name('password.kirim');
+    Route::get('/password/forgot/{token}', [ResetPasswordController::class, 'forgot'])->name('password.forgot');
+    Route::post('/password/ubah', [ResetPasswordController::class, 'ubah'])->name('password.ubah');
+
 
 });
 
