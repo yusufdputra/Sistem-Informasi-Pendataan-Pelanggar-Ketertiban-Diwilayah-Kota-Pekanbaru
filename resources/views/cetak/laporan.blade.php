@@ -134,6 +134,16 @@
               <br>
               <br>
               KEPALA SATUAN POLISI PAMONG PRAJA
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              IWAN SAMUEL PARLINDUNGAN SIMATUPANG, AP, S.Sos, M.Si
+              <br>
+              NIP. 19760705 199412 1 001
             </strong>
           </p>
 
