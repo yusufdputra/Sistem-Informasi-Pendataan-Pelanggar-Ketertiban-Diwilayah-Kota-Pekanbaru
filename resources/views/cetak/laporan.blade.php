@@ -84,6 +84,7 @@
                 <th>Lokasi</th>
                 <th>Keterangan</th>
                 <th>Foto KTP</th>
+                <th>Foto Sangsi</th>
               </tr>
             </thead>
             <tbody style="text-align: center !important">
@@ -111,6 +112,9 @@
                 <td>{{$value->keterangan}}</td>
                 <td>
                 <img src="storage/{{$value->ktp_path}}" height="60px" class="m-b-20 thumb-img" alt="work-thumbnail">
+                </td>
+                <td>
+                <img src="storage/{{$value->sangsi_path}}" height="60px" class="m-b-20 thumb-img" alt="work-thumbnail">
                 </td>
               </tr>
               @endforeach
