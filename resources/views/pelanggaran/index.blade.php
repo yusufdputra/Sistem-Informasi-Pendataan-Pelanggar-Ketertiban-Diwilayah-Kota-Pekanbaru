@@ -49,9 +49,7 @@
             <th>Lokasi</th>
             <th>Keterangan</th>
             <th>Foto KTP</th>
-            @role('pimpinan|admin')
             <th>Foto Sangsi</th>
-            @endrole
             @role('admin|petugas')
             <th>Aksi</th>
             @endrole
@@ -86,11 +84,9 @@
               <a href="#view-image-modal" data-animation="sign" data-plugin="custommodal" data-judul="Foto KTP Pelanggar" data-path='{{$value->ktp_path}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-primary btn-sm view_image"><i class=" mdi mdi-eye"></i></a>
             </td>
 
-            @role('pimpinan|admin')
             <td>
               <a href="#view-image-modal" data-animation="sign" data-plugin="custommodal" data-judul="Foto Pelaksanaan Sangsi" data-path='{{$value->sangsi_path}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-primary btn-sm view_image"><i class=" mdi mdi-eye"></i></a>
             </td>
-            @endrole
 
             @role('admin|petugas')
             @if (($value->status) == 0)
