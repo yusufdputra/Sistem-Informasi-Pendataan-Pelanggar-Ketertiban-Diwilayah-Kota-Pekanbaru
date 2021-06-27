@@ -18,10 +18,10 @@ class PelanggaranController extends Controller
     public function index()
     {
         $title = "Kelola Data Pelanggaran";
-       
+
         if (Auth::user()->roles[0]['name'] == 'pimpinan') {
             $pelanggaran = Pelanggaran::with('user', 'perda')->where('status', 1)->orderBy('created_at', 'DESC')->get();
-        }else{
+        } else {
             $pelanggaran = Pelanggaran::with('user', 'perda')->orderBy('created_at', 'DESC')->orderBy('status', 'ASC')->get();
         }
         return view('pelanggaran.index', compact('pelanggaran', 'title'));
@@ -43,11 +43,19 @@ class PelanggaranController extends Controller
         try {
             $files = $request->file();
 
-            if ($files == null) {
+            if (($_FILES["foto_ktp"]['name']) == null) {
                 return redirect()->back()->with('alert', 'Foto KTP tidak ditemukan. Coba lagi.');
             } else {
-                $file_name = time() . '_' . $files['foto_ktp']->getClientOriginalName();
-                $file_path = $files['foto_ktp']->storeAs('uploads', $file_name, 'public');
+                // upload foto ktp
+                $file_name_ktp = time() . '_' . $files['foto_ktp']->getClientOriginalName();
+                $ktp_path = $files['foto_ktp']->storeAs('uploads', $file_name_ktp, 'public');
+                // upload foto sangsi jika ada
+
+                $sangsi_path = null;
+                if (($_FILES["foto_sangsi"]['name']) != null) {
+                    $file_name_sangsi = time() . '_' . $files['foto_sangsi']->getClientOriginalName();
+                    $sangsi_path = $files['foto_sangsi']->storeAs('uploads', $file_name_sangsi, 'public');
+                }
 
 
                 $query = Pelanggaran::insert([
@@ -64,7 +72,8 @@ class PelanggaranController extends Controller
                     'sangsi' => $request->jenisSangsi,
                     'keterangan' => $request->keterangan,
                     'lokasi' => $request->lokasi,
-                    'ktp_path' => $file_path,
+                    'ktp_path' => $ktp_path,
+                    'sangsi_path' => $sangsi_path,
                     'status' => 0,
                     'id_petugas' => Auth::id(),
                     'created_at' => Carbon::now(),
@@ -111,6 +120,21 @@ class PelanggaranController extends Controller
     public function update(Request $request)
     {
         try {
+            $files = $request->file();
+            $sangsi_path = $request->foto_sangsi_old;
+            if (($_FILES["foto_sangsi"]['name']) != null) {
+
+                $file_name_sangsi = time() . '_' . $files['foto_sangsi']->getClientOriginalName();
+                $sangsi_path = $files['foto_sangsi']->storeAs('uploads', $file_name_sangsi, 'public');
+
+                // hapus foto lama di folder
+                if ($request->foto_sangsi_old != null) {
+                    $image_path_old = public_path('\storage/' . $request->foto_sangsi_old);
+                    unlink($image_path_old);
+                }
+            }
+
+
 
             $query = Pelanggaran::where('id', $request->id)
                 ->update([
@@ -126,6 +150,7 @@ class PelanggaranController extends Controller
                     'pelanggaran' => $request->perdaPelanggaran,
                     'sangsi' => $request->jenisSangsi,
                     'keterangan' => $request->keterangan,
+                    'sangsi_path' => $sangsi_path,
                     'lokasi' => $request->lokasi,
                 ]);
 
@@ -141,13 +166,35 @@ class PelanggaranController extends Controller
 
     public function terima($id)
     {
+        $title = "Terima Pelanggaran";
+        $pelanggaran = Pelanggaran::with('perda')
+            ->where('id', $id)
+            ->first();
+        return view('pelanggaran.terima', compact('title', 'pelanggaran'));
+    }
+
+    public function terima2(Request $request)
+    {
         try {
+            $id = $request->id;
+
+            if ($request->foto_sangsi_old == null) {
+                $files = $request->file();
+                if (($_FILES["foto_sangsi"]['name']) != null) {
+                    $file_name_sangsi = time() . '_' . $files['foto_sangsi']->getClientOriginalName();
+                    $sangsi_path = $files['foto_sangsi']->storeAs('uploads', $file_name_sangsi, 'public');
+                }
+            } else {
+                $sangsi_path = $request->foto_sangsi_old;
+            }
+
             Pelanggaran::where('id', $id)
                 ->update([
-                    'status' => 1
+                    'status' => 1,
+                    'sangsi_path' => $sangsi_path,
                 ]);
 
-            return redirect()->back()->with('success', 'Pelanggaran Berhasil Di Approve');
+            return redirect('pelanggaran')->with('success', 'Pelanggaran Berhasil Di Approve');
         } catch (\Throwable $th) {
             return redirect()->back()->with('alert', 'Pelanggaran Gagal Di Approve');
         }

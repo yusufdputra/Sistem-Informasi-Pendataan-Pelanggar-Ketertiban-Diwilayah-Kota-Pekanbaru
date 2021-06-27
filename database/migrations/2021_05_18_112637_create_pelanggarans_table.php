@@ -29,6 +29,7 @@ class CreatePelanggaransTable extends Migration
             $table->string('lokasi');
             $table->text('keterangan');
             $table->string('ktp_path');
+            $table->string('sangsi_path');
             $table->boolean('status');
             $table->bigInteger('id_petugas');
             $table->timestamps();

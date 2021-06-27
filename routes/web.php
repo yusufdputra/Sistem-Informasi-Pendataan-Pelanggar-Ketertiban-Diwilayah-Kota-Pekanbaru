@@ -72,6 +72,7 @@ Route::group(['middleware' => ['role:admin']], function () {
 
     // approve pelanggaran
     Route::get('/pelanggaran/terima/{id}', [PelanggaranController::class, 'terima'])->name('pelanggaran.terima');
+    Route::post('/pelanggaran/terima2', [PelanggaranController::class, 'terima2'])->name('pelanggaran.terima2');
 });
 
 Route::group(['middleware' => ['role:petugas|admin|pimpinan']], function () {
@@ -82,8 +83,6 @@ Route::group(['middleware' => ['role:petugas|admin|pimpinan']], function () {
     Route::post('/cetak', [CetakController::class, 'cetak'])->name('cetak');
 
     // kelola ganti passsword
-
-
     Route::post('/user/resetpw', [UserManagementController::class, 'resetpw'])->name('user.resetpw');
 });
 

@@ -44,10 +44,14 @@
             <th>Alamat</th>
             <th>Nomor Hp</th>
             <th>Pelanggaran</th>
+            <th>Sangsi</th>
             <th>Waktu</th>
             <th>Lokasi</th>
             <th>Keterangan</th>
             <th>Foto KTP</th>
+            @role('pimpinan|admin')
+            <th>Foto Sangsi</th>
+            @endrole
             @role('admin|petugas')
             <th>Aksi</th>
             @endrole
@@ -74,12 +78,19 @@
             <td>{{$value->alamat}}</td>
             <td>{{$value->nomor_hp}}</td>
             <td>{{$value->perda[0]['nama_perda']}} - {{$value->pelanggaran}}</td>
+            <td>{{$value->sangsi}}</td>
             <td>{{date("d-M-Y H:i ", strtotime(($value->created_at)))}} WIB</td>
             <td>{{$value->lokasi}}</td>
             <td>{{$value->keterangan}}</td>
             <td>
-              <a href="#view-image-modal" data-animation="sign" data-plugin="custommodal" data-path='{{$value->ktp_path}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-primary btn-sm view_image"><i class=" mdi mdi-eye"></i></a>
+              <a href="#view-image-modal" data-animation="sign" data-plugin="custommodal" data-judul="Foto KTP Pelanggar" data-path='{{$value->ktp_path}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-primary btn-sm view_image"><i class=" mdi mdi-eye"></i></a>
             </td>
+
+            @role('pimpinan|admin')
+            <td>
+              <a href="#view-image-modal" data-animation="sign" data-plugin="custommodal" data-judul="Foto Pelaksanaan Sangsi" data-path='{{$value->sangsi_path}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-primary btn-sm view_image"><i class=" mdi mdi-eye"></i></a>
+            </td>
+            @endrole
 
             @role('admin|petugas')
             @if (($value->status) == 0)
@@ -117,7 +128,7 @@
   <div class="custom-modal-text">
 
     <div class="text-center">
-      <h4 class="text-uppercase font-bold mb-0">Foto KTP Pelanggar</h4>
+      <h4 class="text-uppercase font-bold mb-0 judul"></h4>
     </div>
     <div class="p-20 ">
 
@@ -187,7 +198,7 @@
           <label for="">Dari Tanggal</label>
           <div class="col-xs-12">
             <div class="input-group-append">
-              <input type="text" id="startdate" class="form-control datepicker-autoclose" required="" placeholder="dd/mm/yyyy"  autocomplete="off"  name="start_date" id="">
+              <input type="text" id="startdate" class="form-control datepicker-autoclose" required="" placeholder="dd/mm/yyyy" autocomplete="off" name="start_date" id="">
               <span class="input-group-text"><i class="ti-calendar"></i></span>
             </div>
           </div>
@@ -197,7 +208,7 @@
           <label for="">Sampai Tanggal</label>
           <div class="col-xs-12">
             <div class="input-group-append">
-              <input type="text" id="enddate" class="form-control datepicker-autoclose" required="" placeholder="dd/mm/yyyy"  autocomplete="off" name="end_date"  id="">
+              <input type="text" id="enddate" class="form-control datepicker-autoclose" required="" placeholder="dd/mm/yyyy" autocomplete="off" name="end_date" id="">
               <span class="input-group-text"><i class="ti-calendar"></i></span>
             </div>
           </div>
@@ -222,9 +233,16 @@
   $('.view_image').click(function() {
     $('#img_view').html('')
     var foto_path = $(this).data('path');
+    var judul = $(this).data('judul');
 
+    $('.judul').html(judul)
     $('#load').append('<i class="fa fa-spin fa-circle-o-notch"></i>')
-    $('#img_view').append('<img src="storage/' + foto_path + '"  class="m-b-20 thumb-img" alt="work-thumbnail">')
+    if (foto_path != null) {
+      $('#img_view').append('<img src="storage/' + foto_path + '"  class="m-b-20 thumb-img" alt="work-thumbnail">')
+    } else {
+      $('#img_view').append('<div class="alert alert-danger"><p>Foto belum di upload</p></div>')
+      
+    }
     $('#load').html('')
   });
 

@@ -200,23 +200,33 @@
             <div class="form-group">
               <label for="">Nomor Hp</label>
               <div class="col-xs-12">
-                <input class="form-control" type="text" autocomplete="off" name="no_hp" required="" placeholder="Nomor Hp">
+                <input class="form-control" type="text" autocomplete="off" id="nomor_hp" name="no_hp" required="" placeholder="Nomor Hp">
               </div>
             </div>
           </div>
 
         </div>
 
-        <div class="col-lg-12 col-xs-12">
-          <div class="form-group">
-            <label for="">Foto KTP</label>
-            <div class="col-xs-12">
-              <input type="file" required name="foto_ktp" class="dropify" data-max-file-size="5M" accept=".png, .jpg, .jpeg" />
+        <div class="col-lg-12 col-xs-12 row">
+
+          <div class="col-lg-6 col-xs-12">
+            <div class="form-group">
+              <label for="">Foto KTP</label>
+              <div class="col-xs-12">
+                <input type="file" required name="foto_ktp" class="dropify" data-max-file-size="5M" accept=".png, .jpg, .jpeg" />
+              </div>
             </div>
           </div>
+          <div class="col-lg-6 col-xs-12">
+            <div class="form-group">
+              <label for="">Foto Pelaksanaan Sangsi</label>
+              <div class="col-xs-12">
+                <input type="file" name="foto_sangsi" class="dropify" data-max-file-size="5M" accept=".png, .jpg, .jpeg" />
+              </div>
+            </div>
+          </div>
+
         </div>
-
-
 
         <div class="form-group text-center m-t-30">
           <div class="col-xs-12">
@@ -246,6 +256,7 @@
       $('#agama').val()
       $('#pekerjaan').val('')
       $('#alamat').val('')
+      $('#nomor_hp').val('')
       if ($.fn.dataTable.isDataTable('#table_info_pelanggaran')) {
 
         dataTable = $('#table_info_pelanggaran').DataTable();
@@ -283,6 +294,7 @@
               $('#agama').val(element['agama'])
               $('#pekerjaan').val(element['pekerjaan'])
               $('#alamat').val(element['alamat'])
+              $('#nomor_hp').val(element['nomor_hp'])
 
               var date = new Date(element['created_at'])
               var getDate = date.getDate() + '-' + monthNames[date.getMonth()] + '-' + date.getFullYear()

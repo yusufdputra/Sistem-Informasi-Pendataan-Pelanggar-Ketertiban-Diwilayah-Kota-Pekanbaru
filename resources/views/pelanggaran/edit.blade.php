@@ -228,6 +228,38 @@
           </div>
         </div> -->
 
+        <div class="col-lg-12 col-xs-12 row">
+
+          <div class="col-lg-6 col-xs-12">
+            <div class="form-group">
+              <label for="">Foto Pelaksanaan Sangsi</label>
+              <div class="col-xs-12">
+                <div class="m-b-20" id="img_view">
+                  @if($pelanggaran['sangsi_path'] != null)
+                  <img src="../../../storage/{{$pelanggaran['sangsi_path']}}" class="m-b-20 thumb-img" alt="work-thumbnail">
+                  @else
+                  <div class="alert alert-danger">
+                    <p>Foto belum di upload</p>
+                  </div>
+                  @endif
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-6 col-xs-12">
+            <div class="form-group">
+              <label for="">Foto Pelaksanaan Sangsi</label>
+              <div class="col-xs-12">
+                <input type="hidden" name="foto_sangsi_old" value="{{$pelanggaran['sangsi_path']}}" id="foto_sangsi_old">
+                <input type="file" name="foto_sangsi" class="dropify" data-max-file-size="5M" accept=".png, .jpg, .jpeg" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+
 
 
         <div class="form-group text-center m-t-30">
