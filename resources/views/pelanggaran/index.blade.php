@@ -187,7 +187,7 @@
           <label for="">Dari Tanggal</label>
           <div class="col-xs-12">
             <div class="input-group-append">
-              <input type="text" id="startdate" class="form-control datepicker-autoclose" placeholder="dd/mm/yyyy"  autocomplete="off"  name="start_date" id="">
+              <input type="text" id="startdate" class="form-control datepicker-autoclose" required="" placeholder="dd/mm/yyyy"  autocomplete="off"  name="start_date" id="">
               <span class="input-group-text"><i class="ti-calendar"></i></span>
             </div>
           </div>
@@ -197,7 +197,7 @@
           <label for="">Sampai Tanggal</label>
           <div class="col-xs-12">
             <div class="input-group-append">
-              <input type="text" id="enddate" class="form-control datepicker-autoclose" placeholder="dd/mm/yyyy"  autocomplete="off" name="end_date"  id="">
+              <input type="text" id="enddate" class="form-control datepicker-autoclose" required="" placeholder="dd/mm/yyyy"  autocomplete="off" name="end_date"  id="">
               <span class="input-group-text"><i class="ti-calendar"></i></span>
             </div>
           </div>
