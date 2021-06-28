@@ -192,6 +192,17 @@
         <input type="hidden" value="keluar" name="jenis">
 
         <div class="form-group">
+          <label for="">Status Pelanggaran</label>
+          <div class="col-xs-12">
+            <select required class="form-control" name="status_adm" id="nama_perda">
+              <option value="selesai">Telah Selesai Administratif</option>
+              <option value="belum">Belum Selesai Administratif</option>
+              <option value="semua">Semua Pelanggaran</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
           <label for="">Dari Tanggal</label>
           <div class="col-xs-12">
             <div class="input-group-append">
@@ -240,7 +251,7 @@
       $('#img_view').append('<img src="storage/' + foto_path + '"  class="m-b-20 thumb-img" alt="work-thumbnail">')
     } else {
       $('#img_view').append('<div class="alert alert-danger"><p>Foto belum di upload</p></div>')
-      
+
     }
     $('#load').html('')
   });

@@ -45,7 +45,6 @@
 
   <div id="container">
 
-
     <div id="header">
       <div style="float: left;">
         <img height="120px" src="..\public\adminto\images\brand\pku.png" alt="">
@@ -64,7 +63,7 @@
     </div>
     <div id="body">
       <div style="font-size: 12px;">
-        <p>Laporan Pelanggaran Tanggal {{date('d-M-Y', strtotime($start))}} s/d {{date('d-M-Y', strtotime($end))}} </p>
+        <h3>Laporan pelanggaran yang {{$status_adm}} secara administrasi tanggal {{date('d-M-Y', strtotime($start))}} s/d {{date('d-M-Y', strtotime($end))}} </h3>
 
         <div style="font-size: 12px;">
           <table style="width: 100%; border-style: solid !important; border-collapse: collapse; " border="1">
@@ -85,6 +84,7 @@
                 <th>Keterangan</th>
                 <th>Foto KTP</th>
                 <th>Foto Sangsi</th>
+                <th>Keterangan Sangsi</th>
               </tr>
             </thead>
             <tbody style="text-align: center !important">
@@ -116,6 +116,7 @@
                 <td>
                 <img src="storage/{{$value->sangsi_path}}" height="60px" class="m-b-20 thumb-img" alt="work-thumbnail">
                 </td>
+                <td>{{$value->keterangan_sangsi}}</td>
               </tr>
               @endforeach
 
