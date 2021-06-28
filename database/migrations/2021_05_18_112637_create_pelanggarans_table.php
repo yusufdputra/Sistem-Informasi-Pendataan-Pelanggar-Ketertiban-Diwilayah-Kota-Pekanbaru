@@ -30,6 +30,8 @@ class CreatePelanggaransTable extends Migration
             $table->text('keterangan');
             $table->string('ktp_path');
             $table->string('sangsi_path');
+            $table->string('jenis_sangsi');
+            $table->text('keterangan_sangsi');
             $table->boolean('status');
             $table->bigInteger('id_petugas');
             $table->timestamps();

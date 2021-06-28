@@ -229,6 +229,31 @@
         </div> -->
 
         <div class="col-lg-12 col-xs-12 row">
+          <div class="col-lg-6 col-xs-12">
+            <div class="form-group">
+              <label for="">Penyelesaian Sangsi</label>
+              <div class="col-xs-12">
+                <select required class="form-control" name="jenis_sangsi" id="nama_perda">
+                  <option selected disabled>Jenis Sangsi...</option>
+                  <option {{$pelanggaran['jenis_sangsi'] == 'ditempat' ? 'selected' : '' }} value="ditempat">Penyelesaian Ditempat</option>
+                  <option {{$pelanggaran['jenis_sangsi'] == 'dikantor' ? 'selected' : '' }} value="dikantor">Penyelesaian Dikantor</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-xs-12">
+            <div class="form-group">
+              <label for="">Keterangan Foto Pelaksanaan Sangsi</label>
+              <div class="col-xs-12">
+                <textarea class="form-control" type="text" autocomplete="off" name="keterangan_sangsi" placeholder="Keterangan Foto Pelaksanaan Sangsi" required="">{{$pelanggaran['keterangan_sangsi']}}</textarea>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-lg-12 col-xs-12 row">
 
           <div class="col-lg-6 col-xs-12">
             <div class="form-group">
@@ -259,6 +284,8 @@
           </div>
 
         </div>
+
+
 
 
 

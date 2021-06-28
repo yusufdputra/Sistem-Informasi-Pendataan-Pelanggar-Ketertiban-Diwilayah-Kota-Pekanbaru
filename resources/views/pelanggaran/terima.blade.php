@@ -29,7 +29,7 @@
               <label for="">Nomor KTP</label>
               <div class="col-xs-12">
                 <div class="input-group-append">
-                  <input class="form-control" value="{{$pelanggaran['no_ktp']}}" id="no_ktp" type="text">
+                  <input class="form-control" readonly value="{{$pelanggaran['no_ktp']}}" id="no_ktp" type="text">
                 </div>
               </div>
             </div>
@@ -82,7 +82,32 @@
             <div class="form-group">
               <label for="">Lokasi Pelanggaran</label>
               <div class="col-xs-12">
-                <textarea class="form-control" type="text" autocomplete="off" name="lokasi" placeholder="Lokasi Pelanggaran" required="">{{$pelanggaran['lokasi']}}</textarea>
+                <textarea class="form-control" readonly type="text" autocomplete="off" name="lokasi" placeholder="Lokasi Pelanggaran" required="">{{$pelanggaran['lokasi']}}</textarea>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-lg-12 col-xs-12 row">
+          <div class="col-lg-6 col-xs-12">
+            <div class="form-group">
+              <label for="">Penyelesaian Sangsi</label>
+              <div class="col-xs-12">
+                <select required class="form-control" name="jenis_sangsi" id="nama_perda">
+                  <option selected disabled>Jenis Sangsi...</option>
+                  <option {{$pelanggaran['jenis_sangsi'] == 'ditempat' ? 'selected' : '' }} value="ditempat">Penyelesaian Ditempat</option>
+                  <option {{$pelanggaran['jenis_sangsi'] == 'dikantor' ? 'selected' : '' }} value="dikantor">Penyelesaian Dikantor</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-xs-12">
+            <div class="form-group">
+              <label for="">Keterangan Foto Pelaksanaan Sangsi</label>
+              <div class="col-xs-12">
+                <textarea class="form-control" type="text" autocomplete="off" name="keterangan_sangsi" placeholder="Keterangan Foto Pelaksanaan Sangsi" required="">{{$pelanggaran['keterangan_sangsi']}}</textarea>
               </div>
             </div>
           </div>
@@ -103,12 +128,27 @@
                   <div class="alert alert-danger">
                     Foto belum di upload
                   </div>
-                  <input type="file" required name="foto_sangsi" class="dropify" data-max-file-size="5M" accept=".png, .jpg, .jpeg" />
+                  <!-- <input type="file" required name="foto_sangsi" class="dropify" data-max-file-size="5M" accept=".png, .jpg, .jpeg" /> -->
                   @endif
                 </div>
               </div>
             </div>
           </div>
+
+
+          @if($pelanggaran['jenis_sangsi'] == 'dikantor')
+          <div class="col-lg-6 col-xs-12">
+            <div class="form-group">
+              <label for="">Ubah Foto Pelaksanaan Sangsi</label>
+              <div class="col-xs-12">
+                <div class="m-b-20" id="img_view">
+                  <input type="hidden" name="foto_sangsi_old" value="{{$pelanggaran['sangsi_path']}}" id="foto_sangsi_old">
+                  <input type="file" required name="foto_sangsi" class="dropify" data-max-file-size="5M" accept=".png, .jpg, .jpeg" />
+                </div>
+              </div>
+            </div>
+          </div>
+          @endif
         </div>
 
         <div class="form-group text-center m-t-30">

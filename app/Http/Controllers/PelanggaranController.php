@@ -74,6 +74,8 @@ class PelanggaranController extends Controller
                     'lokasi' => $request->lokasi,
                     'ktp_path' => $ktp_path,
                     'sangsi_path' => $sangsi_path,
+                    'jenis_sangsi' => $request->jenis_sangsi,
+                    'keterangan_sangsi' => $request->keterangan_sangsi,
                     'status' => 0,
                     'id_petugas' => Auth::id(),
                     'created_at' => Carbon::now(),
@@ -151,6 +153,8 @@ class PelanggaranController extends Controller
                     'sangsi' => $request->jenisSangsi,
                     'keterangan' => $request->keterangan,
                     'sangsi_path' => $sangsi_path,
+                    'jenis_sangsi' => $request->jenis_sangsi,
+                    'keterangan_sangsi' => $request->keterangan_sangsi,
                     'lokasi' => $request->lokasi,
                 ]);
 
@@ -178,20 +182,22 @@ class PelanggaranController extends Controller
         try {
             $id = $request->id;
 
-            if ($request->foto_sangsi_old == null) {
-                $files = $request->file();
-                if (($_FILES["foto_sangsi"]['name']) != null) {
-                    $file_name_sangsi = time() . '_' . $files['foto_sangsi']->getClientOriginalName();
-                    $sangsi_path = $files['foto_sangsi']->storeAs('uploads', $file_name_sangsi, 'public');
-                }
-            } else {
-                $sangsi_path = $request->foto_sangsi_old;
+            $files = $request->file();
+            if (($_FILES["foto_sangsi"]['name']) != null) {
+                $file_name_sangsi = time() . '_' . $files['foto_sangsi']->getClientOriginalName();
+                $sangsi_path = $files['foto_sangsi']->storeAs('uploads', $file_name_sangsi, 'public');
+
+                // hapus foto lama
+                $image_path_old = public_path('\storage/' . $request->foto_sangsi_old);
+                unlink($image_path_old);
             }
 
             Pelanggaran::where('id', $id)
                 ->update([
                     'status' => 1,
                     'sangsi_path' => $sangsi_path,
+                    'jenis_sangsi' => $request->jenis_sangsi,
+                    'keterangan_sangsi' => $request->keterangan_sangsi,
                 ]);
 
             return redirect('pelanggaran')->with('success', 'Pelanggaran Berhasil Di Approve');

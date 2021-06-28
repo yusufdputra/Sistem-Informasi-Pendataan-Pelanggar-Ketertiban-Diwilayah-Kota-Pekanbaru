@@ -81,11 +81,11 @@
             <td>{{$value->lokasi}}</td>
             <td>{{$value->keterangan}}</td>
             <td>
-              <a href="#view-image-modal" data-animation="sign" data-plugin="custommodal" data-judul="Foto KTP Pelanggar" data-path='{{$value->ktp_path}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-primary btn-sm view_image"><i class=" mdi mdi-eye"></i></a>
+              <a href="#view-image-modal" data-animation="sign" data-plugin="custommodal" data-keterangan="" data-judul="Foto KTP Pelanggar" data-path='{{$value->ktp_path}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-primary btn-sm view_image"><i class=" mdi mdi-eye"></i></a>
             </td>
 
             <td>
-              <a href="#view-image-modal" data-animation="sign" data-plugin="custommodal" data-judul="Foto Pelaksanaan Sangsi" data-path='{{$value->sangsi_path}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-primary btn-sm view_image"><i class=" mdi mdi-eye"></i></a>
+              <a href="#view-image-modal" data-animation="sign" data-plugin="custommodal" data-keterangan="Keterangan : {{$value->keterangan_sangsi}}" data-judul="Foto Pelaksanaan Sangsi" data-path='{{$value->sangsi_path}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-primary btn-sm view_image"><i class=" mdi mdi-eye"></i></a>
             </td>
 
             @role('admin|petugas')
@@ -134,6 +134,7 @@
 
         <div class="m-b-20" id="img_view">
         </div>
+        <h5 class="text-left text-uppercase font-bold mb-0 keterangan"></h5>
       </div>
     </div>
   </div>
@@ -230,8 +231,10 @@
     $('#img_view').html('')
     var foto_path = $(this).data('path');
     var judul = $(this).data('judul');
+    var keterangan = $(this).data('keterangan');
 
     $('.judul').html(judul)
+    $('.keterangan').html(keterangan)
     $('#load').append('<i class="fa fa-spin fa-circle-o-notch"></i>')
     if (foto_path != null) {
       $('#img_view').append('<img src="storage/' + foto_path + '"  class="m-b-20 thumb-img" alt="work-thumbnail">')
