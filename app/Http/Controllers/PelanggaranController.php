@@ -182,15 +182,21 @@ class PelanggaranController extends Controller
         try {
             $id = $request->id;
 
-            $files = $request->file();
-            if (($_FILES["foto_sangsi"]['name']) != null) {
-                $file_name_sangsi = time() . '_' . $files['foto_sangsi']->getClientOriginalName();
-                $sangsi_path = $files['foto_sangsi']->storeAs('uploads', $file_name_sangsi, 'public');
 
-                // hapus foto lama
-                $image_path_old = public_path('\storage/' . $request->foto_sangsi_old);
-                unlink($image_path_old);
+            if ($request->jenis_sangsi == 'dikantor') {
+                $files = $request->file();
+                if (($_FILES["foto_sangsi"]['name']) != null) {
+                    $file_name_sangsi = time() . '_' . $files['foto_sangsi']->getClientOriginalName();
+                    $sangsi_path = $files['foto_sangsi']->storeAs('uploads', $file_name_sangsi, 'public');
+
+                    // hapus foto lama
+                    $image_path_old = public_path('\storage/' . $request->foto_sangsi_old);
+                    unlink($image_path_old);
+                }
+            }else{
+                $sangsi_path = $request->foto_sangsi_old;
             }
+
 
             Pelanggaran::where('id', $id)
                 ->update([
@@ -202,7 +208,7 @@ class PelanggaranController extends Controller
 
             return redirect('pelanggaran')->with('success', 'Pelanggaran Berhasil Di Approve');
         } catch (\Throwable $th) {
-            return redirect()->back()->with('alert', 'Pelanggaran Gagal Di Approve');
+            return redirect()->back()->with('alert', 'Pelanggaran Gagal Di Approve' );
         }
     }
 }
