@@ -50,6 +50,7 @@
             <th>Keterangan</th>
             <th>Foto KTP</th>
             <th>Foto Sangsi</th>
+            <th>Tempat Penyelesaian</th>
             @role('admin|petugas')
             <th>Aksi</th>
             @endrole
@@ -87,6 +88,8 @@
             <td>
               <a href="#view-image-modal" data-animation="sign" data-plugin="custommodal" data-keterangan="Keterangan : {{$value->keterangan_sangsi}}" data-judul="Foto Pelaksanaan Sangsi" data-path='{{$value->sangsi_path}}' data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-primary btn-sm view_image"><i class=" mdi mdi-eye"></i></a>
             </td>
+
+            <td>{{strtoupper($value->jenis_sangsi)}}</td>
 
             @role('admin|petugas')
             @if (($value->status) == 0)
